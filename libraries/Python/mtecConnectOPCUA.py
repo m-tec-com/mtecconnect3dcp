@@ -1,15 +1,20 @@
 from opcua import Client, ua #https://github.com/FreeOpcUa/python-opcua
 
 class Machine:
-    def __init__(self, baseNode="ns=4;s=|var|B-Fortis CC-Slim S04.Application.GVL_OPC.", liveBitNode = "Livebit2machine"):
+    """Initializes the Machine class
+    Args:
+        baseNode: str; Base node of the machine
+        liveBitNode: str; Name of the livebit variable (default = "Livebit2machine")
+    """
+    def __init__(self, baseNode = "ns=4;s=|var|B-Fortis CC-Slim S04.Application.GVL_OPC.", liveBitNode = "Livebit2machine"):
         self.baseNode = baseNode
         self.liveBitNode = liveBitNode
 
     """Connects to the machine using the provided IP
     Args:
-        ip: IP-Adress of the machine
+        ip: str; IP-Adress of the machine
     """
-    def connect(self, ip):
+    def connect(self, ip: str):
         self.reader = Client(ip)
         self.writer = Client(ip)
         self.reader.connect()
@@ -20,11 +25,11 @@ class Machine:
     
     """Changes the value of a OPCUA Variable
     Args:
-        variable: Variable to change
-        value: value to change the variable to
-        typ: string of variable type (bool, int, float)
+        parameter: str; Variable to change
+        value: any; value to change the variable to
+        typ: str; string of variable type (bool, uint16, int32, float)
     """
-    def change(self, parameter, value, typ):
+    def change(self, parameter: str, value: any, typ: str):
         #print(parameter, value, typ)
         if typ == "bool":
             t = ua.VariantType.Boolean
@@ -44,18 +49,18 @@ class Machine:
 
     """Reades the value of a OPCUA Variable
     Args:
-        variable: Variable to read
+        variable: str; Variable to read
     """
-    def read(self, parameter):
+    def read(self, parameter: str) -> any:
         return self.reader.get_node(self.baseNode + parameter).get_value()
 
     """Subscribes to given parameter
     Args:
-        parameter: the OPC-UA Parameter to subscribe to (check docs for names)
-        callback: Callback the variable and timestamp gets passed - callb(value, parameter)
-        intervall: Intervall in ms that defined the frequency in which the parameter is checked
+        parameter: str; the OPC-UA Parameter to subscribe to (check docs for names)
+        callback: callable; Callback the variable and timestamp gets passed - callb(value, parameter)
+        intervall: int; Intervall in ms that defined the frequency in which the parameter is checked
     """
-    def subscribe(self, parameter, callback, intervall):
+    def subscribe(self, parameter: str, callback: callable, intervall: int):
         subscriptionHandler = OpcuaSubscriptionHandler(parameter, callback)
         subscription = self.reader.create_subscription(intervall, subscriptionHandler)
         handler = subscription.subscribe_data_change(self.reader.get_node(self.baseNode + parameter))
@@ -63,9 +68,9 @@ class Machine:
 
     """Changes the Livebit
     Args:
-        value: The value to change the Livebit to
+        value: bool; The value to change the Livebit to
     """
-    def changeLivebit(self, value, parameter=None):
+    def changeLivebit(self, value: bool, parameter=None):
         self.change(self.liveBitNode, value, "bool")
 
 
@@ -75,203 +80,200 @@ class Machine:
 class Mixingpump(Machine):
     """Starts / Stops the machine
     Args / returns:
-        state: true/false = on/off
+        state: bool; true/false = on/off
     """
     @property
-    def running(self):
-        return self.read("Remote_start")
+    def running(self) -> bool:
+        return bool(self.read("Remote_start"))
     @running.setter
-    def running(self, state):
+    def running(self, state: bool):
         self.change("Remote_start", state, "bool")
     
     """Changes / reads the speed setting of the mixingpump
     Args / returns:
-        speed: Speed in %
+        speed: float; Speed in %
     """
     @property
-    def speed(self):
-        return self.read("set_value_mixingpump")*100/65535 # 100% = 65535, 0% = 0
+    def speed(self) -> float:
+        return self.read("set_value_mixingpump") * 100 / 65535 # 100% = 65535, 0% = 0
     @speed.setter
-    def speed(self, speed):
-        hz = speed*65535/100 # 100% = 65535, 0% = 0
+    def speed(self, speed: float):
+        hz = speed * 65535 / 100 # 100% = 65535, 0% = 0
         self.change("set_value_mixingpump", int(hz), "uint16")
     
     """Reads the real speed of the mixingpump
     Returns:
-        Speed in %
+        speed: float; Speed in %
     """
     @property
-    def real_speed(self):
+    def real_speed(self) -> float:
         speed = self.read("actual_value_mixingpump")
-        return speed*100/65535 # 100% = 65535, 0% = 0
+        return speed * 100 / 65535 # 100% = 65535, 0% = 0
 
     """Starts / Stops the dosingpump
     Args / returns:
-        state: true/false = on/off
+        state: bool; true/false = on/off
     """
     @property
-    def dosingpump(self):
-        return self.read("state_dosingpump_on")
+    def dosingpump(self) -> bool:
+        return bool(self.read("state_dosingpump_on"))
     @dosingpump.setter
-    def dosingpump(self, state):
+    def dosingpump(self, state: bool):
         self.change("state_dosingpump_on", state, "bool")
 
     """Changes / reads the speed setting of the dosingpump
     Args / returns:
-        speed: Speed in %
+        speed: float; Speed in %
     """
     @property
-    def dosingspeed(self):
+    def dosingspeed(self) -> float:
         return self.read("set_value_dosingpump")
     @dosingspeed.setter
-    def dosingspeed(self, speed):
+    def dosingspeed(self, speed: float):
         self.change("set_value_dosingpump", int(speed), "float")
 
     """Changes / reads the water setting of the mixingpump
     Args / returns:
-        speed: amount in l/h
+        speed: float; amount in l/h
     """
     @property
-    def water(self):
+    def water(self) -> float:
         return self.read("set_value_water_flow")
     @water.setter
-    def water(self, speed):
+    def water(self, speed: float):
         self.change("set_value_water_flow", float(speed), "float")
 
     """Reads the real amount of water
     Returns:
-        Amount in l/H
+        speed: float; amount in l/H
     """
     @property
-    def real_water(self):
-        return self.read("actual_value_water_flow")
+    def real_water(self) -> float:
+        return float(self.read("actual_value_water_flow"))
     
     """Reads the real temperature of the water
     Returns:
-        Temperature in °C
+        temperature: float; Temperature in °C
     """
-
-
-
     @property
-    def real_water_temperature(self):
-        return self.read("actual_value_water_temp")
-    
+    def real_water_temperature(self) -> float:
+        return float(self.read("actual_value_water_temp"))
+
     """Reads the real temperature of the mortar
     Returns:
-        Temperature in °C
+        temperature: float; Temperature in °C
     """
     @property
-    def real_temperature(self):
-        return self.read("actual_value_mat_temp")
+    def real_temperature(self) -> float:
+        return float(self.read("actual_value_mat_temp"))
 
     """Reads the real pressure of the mortar
     Returns:
-        Pressure in bar
+        pressure: float; Pressure in bar
     """
     @property
-    def real_pressure(self):
-        return self.read("actual_value_pressure")
+    def real_pressure(self) -> float:
+        return float(self.read("actual_value_pressure"))
 
     """Reads if machine is in error state
     Returns:
-        is error? (true/false)
+        is error: bool
     """
     @property
-    def error(self):
+    def error(self) -> bool:
         return self.read("error")
     
     """Reads the error number of the machine
     Returns:
-        error number (0 = none)
+        error number: int; (0 = none)
     """
     @property
-    def error_no(self):
+    def error_no(self) -> int:
         return self.read("error_no")
 
     """Checks if the machine is ready for operation (on, remote, mixer and mixingpump on)
     Returns:
-        ready for operation (true/false)
+        ready for operation: bool
     """
     @property
-    def ready(self):
+    def ready(self) -> bool:
         return self.read("Ready_for_operation")
 
     """Checks if the mixer is running (in automatic mode)
     Returns:
-        mixer running
+        mixer running: bool
     """
     @property
-    def mixing(self):
+    def mixing(self) -> bool:
         return self.read("aut_mixer")
 
     """Checks if the mixingpump is running
     Returns:
-        mixingpump is running (true/false)
+        mixingpump is running: bool
     """
     @property
-    def pumping(self):
+    def pumping(self) -> bool:
         return self.pumping_net or self.pumping_fc
 
     """Checks if the mixingpump is running on power supply (in automatic mode)
     Returns:
-        mixingpump is running on power supply (true/false)
+        mixingpump is running on power supply: bool
     """
     @property
-    def pumping_net(self):
+    def pumping_net(self) -> bool:
         return self.read("aut_mixingpump_net")
 
     """Checks if the mixingpump is running on frequency converter supply (in automatic mode)
     Returns:
-        mixingpump is running on frequency converter supply (true/false)
+        mixingpump is running on frequency converter supply: bool
     """
     @property
-    def pumping_fc(self):
+    def pumping_fc(self) -> bool:
         return self.read("aut_mixingpump_fc")
 
     """Checks if the selenoid valve is open (in automatic mode)
     Returns:
-        selenoid valve is open (true/false)
+        selenoid valve is open: bool
     """
     @property
-    def solenoidvalve(self):
+    def solenoidvalve(self) -> bool:
         return self.read("aut_solenoid_valve")
     
     """Checks if the water pump is running (in automatic mode)
     Returns:
-        waterpump is running (true/false)
+        waterpump is running: bool
     """
     @property
-    def waterpump(self):
+    def waterpump(self) -> bool:
         return self.read("aut_waterpump")
 
     """Checks if remote is connected
     Returns:
-        remote is connected (true/false)
+        remote is connected: bool
     """
     @property
-    def remote(self):
+    def remote(self) -> bool:
         return self.read("Remote_connected")
 
 
 
     """Changes the state of a Digital Output
     Args:
-        pin: Pin number (1 - 8)
-        value: true/fale = high/low
+        pin: int; Pin number (1 - 8)
+        value: bool; true/false = high/low
     """
-    def setDigital(self, pin, value):
+    def setDigital(self, pin: int, value: bool):
         if pin < 1 or pin > 8:
             print("Pin number (" + str(pin) + ") out of range (1 - 8)")
             return 
         self.change("reserve_DO_" + str(pin), value, "bool")
     """Reads the state of a Digital Input
     Args:
-        pin: Pin number (1 - 10)
+        pin: int; Pin number (1 - 10)
     Returns:
-        actual value (true / false)
+        actual value: bool; true/false = high/low
     """
-    def getDigital(self, pin):
+    def getDigital(self, pin: int) -> bool:
         if pin < 1 or pin > 10:
             print("Pin number (" + str(pin) + ") out of range (1 - 10)")
             return
@@ -279,21 +281,21 @@ class Mixingpump(Machine):
 
     """Changes the state of a Analog Output
     Args:
-        pin: Pin number (1 - 2)
-        value: value to set 0 to 65535
+        pin: int; Pin number (1 - 2)
+        value: int; value to set 0 to 65535
     """
-    def setAnalog(self, pin, value):
+    def setAnalog(self, pin: int, value: int):
         if pin < 1 or pin > 2:
             print("Pin number (" + str(pin) + ") out of range (1 - 2)")
             return 
         self.change("reserve_AO_" + str(pin), value, "uint16")
     """Reads the state of a Analog Input
     Args:
-        pin: Pin number (1 - 5)
+        pin: int; Pin number (1 - 5)
     Returns:
-        actual value (0 - 65535)
+        actual value: int; (0 - 65535)
     """
-    def getAnalog(self, pin):
+    def getAnalog(self, pin: int) -> int:
         if pin < 1 or pin > 5:
             print("Pin number (" + str(pin) + ") out of range (1 - 5)")
             return
@@ -346,75 +348,75 @@ class Mixingpump(Machine):
 class Printhead(Machine):
     """Starts / Stops the printhead
     Args / returns:
-        state: true/false = on/off
+        state: bool; true/false = on/off
     """
     @property
-    def running(self):
+    def running(self) -> bool:
         return self.read("state_printhead_on")
     @running.setter
-    def running(self, state):
+    def running(self, state: bool):
         self.change("state_printhead_on", state, "bool")
 
     """Changes / reads the speed setting of the printhead
     Args / returns:
-        speed: Speed in 1/min
+        speed: int; Speed in 1/min
     """
     @property
-    def speed(self):
+    def speed(self) -> int:
         return self.read("set_value_printhead")
     @speed.setter
-    def speed(self, speed):
+    def speed(self, speed: int):
         self.change("set_value_printhead", int(speed), "uint16")
 
     """Reads the real speed of the printhead
     Returns:
-        Speed in 1/min
+        speed: int; Speed in 1/min
     """
     @property
-    def real_speed(self):
+    def real_speed(self) -> int:
         return self.read("actual_value_printhead")
     
     """Starts / Stops the cleaning water
     Args / returns:
-        state: true/false = on/off
+        state: bool; true/false = on/off
     """
     @property
-    def cleaning(self):
+    def cleaning(self) -> bool:
         return self.read("state_solenoid_valve")
     @cleaning.setter
-    def cleaning(self, state):
+    def cleaning(self, state: bool):
         self.change("state_solenoid_valve", state, "bool")
 
     """Reads the real pressure of the printhead
     Returns:
-        Pressure in bar
+        pressure: float; pressure in bar (if optional sensor installed)
     """
     @property
-    def real_pressure(self):
+    def real_pressure(self) -> float:
         return self.read("actual_value_pressure_printhead")
     
     """Reads if machine is in error state
     Returns:
-        is error? (true/false)
+        is error: bool
     """
     @property
-    def error(self):
+    def error(self) -> bool:
         return self.read("error_printhead")
     
     """Reads the error number of the machine
     Returns:
-        error number (0 = none)
+        error number: int; (0 = none)
     """
     @property
-    def error_no(self):
+    def error_no(self) -> int:
         return self.read("error_no_printhead")
     
     """Checks if the machine is ready for operation (on, remote, mixer and mixingpump on)
     Returns:
-        ready for operation (true/false)
+        ready for operation: bool
     """
     @property
-    def ready(self):
+    def ready(self) -> bool:
         return self.read("Ready_for_operation_printhead")
 
 
@@ -424,64 +426,64 @@ class Printhead(Machine):
 class Dosingpump(Machine):
     """Starts / Stops the dosingpump
     Args / returns:
-        state: true/false = on/off
+        state: bool; true/false = on/off
     """
     @property
-    def running(self):
+    def running(self) -> bool:
         return self.read("state_dosingpump_on")
     @running.setter
-    def running(self, state):
+    def running(self, state: bool):
         self.change("state_dosingpump_on", state, "bool")
     
     """Changes / reads the speed setting of the dosingpump
     Args / returns:
-        speed: Speed in ml/min
+        speed: int; Speed in ml/min
     """
     @property
-    def speed(self):
+    def speed(self) -> int:
         return self.read("set_value_additive")
     @speed.setter
-    def speed(self, speed):
+    def speed(self, speed: int):
         self.change("set_value_additive", int(speed), "float")
 
     """Reads the real speed of the dosingpump
     Returns:
-        Speed in ml/min
+        speed: int; Speed in ml/min
     """
     @property
-    def real_speed(self):
+    def real_speed(self) -> int:
         return self.read("actual_value_additive")
     
     """Reads the real pressure of the dosingpump
     Returns:
-        Pressure in bar
+        pressure: float; Pressure in bar
     """
     @property
-    def real_pressure(self):
+    def real_pressure(self) -> float:
         return self.read("actual_value_pressure_dosingpump")
 
     """Reads if machine is in error state
     Returns:
-        is error? (true/false)
+        is error: bool
     """
     @property
-    def error(self):
+    def error(self) -> bool:
         return self.read("error_dosingpump")
     
     """Reads the error number of the machine
     Returns:
-        error number (0 = none)
+        error number: int; (0 = none)
     """
     @property
-    def error_no(self):
+    def error_no(self) -> int:
         return self.read("error_no_dosingpump")
     
     """Checks if the machine is ready for operation (on, remote, mixer and mixingpump on)
     Returns:
-        ready for operation (true/false)
+        ready for operation: bool
     """
     @property
-    def ready(self):
+    def ready(self) -> bool:
         return self.read("Ready_for_operation_dosingpump")
 
 
