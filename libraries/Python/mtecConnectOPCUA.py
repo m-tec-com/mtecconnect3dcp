@@ -60,11 +60,11 @@ class Machine:
     Args:
         parameter: str; the OPC-UA Parameter to subscribe to (check docs for names)
         callback: callable; Callback the variable and timestamp gets passed - callb(value, parameter)
-        intervall: int; Intervall in ms that defined the frequency in which the parameter is checked
+        interval: int; Interval in ms that defined the frequency in which the parameter is checked
     """
-    def subscribe(self, parameter: str, callback: callable, intervall: int):
+    def subscribe(self, parameter: str, callback: callable, interval: int):
         subscriptionHandler = OpcuaSubscriptionHandler(parameter, callback)
-        subscription = self.reader.create_subscription(intervall, subscriptionHandler)
+        subscription = self.reader.create_subscription(interval, subscriptionHandler)
         handler = subscription.subscribe_data_change(self.reader.get_node(self.baseNode + parameter))
         return [subscription, handler]
 
@@ -136,7 +136,7 @@ class Mixingpump(Machine):
         return self.read("set_value_dosingpump")
     @dosingspeed.setter
     def dosingspeed(self, speed: float):
-        self.change("set_value_dosingpump", int(speed), "float")
+        self.change("set_value_dosingpump", float(speed), "float")
 
     """Changes / reads the water setting of the mixingpump
     Args / returns:
@@ -364,11 +364,11 @@ class Printhead(Machine):
         speed: int; Speed in 1/min
     """
     @property
-    def speed(self) -> int:
+    def speed(self) -> float:
         return self.read("set_value_printhead")
     @speed.setter
-    def speed(self, speed: int):
-        self.change("set_value_printhead", int(speed), "uint16")
+    def speed(self, speed: float):
+        self.change("set_value_printhead", float(speed), "float")
 
     """Reads the real speed of the printhead
     Returns:
@@ -442,11 +442,11 @@ class Dosingpump(Machine):
         speed: int; Speed in ml/min
     """
     @property
-    def speed(self) -> int:
+    def speed(self) -> float:
         return self.read("set_value_dosingpump")
     @speed.setter
-    def speed(self, speed: int):
-        self.change("set_value_dosingpump", int(speed), "float")
+    def speed(self, speed: float):
+        self.change("set_value_dosingpump", float(speed), "float")
 
     """Reads the real speed of the dosingpump
     Returns:

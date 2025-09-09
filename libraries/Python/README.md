@@ -47,8 +47,8 @@ do.running = True  # Start the dosingpump
 
 #### Mixingpump
 - `mp.running` (bool): Start/stop the mixingpump
-- `mp.speed` (int, %): Set speed
-- `mp.real_speed` (float, %): Get actual speed
+- `mp.speed` (int, Hz): Set speed ( :warning: 20 - 50)
+- `mp.real_speed` (float, Hz): Get actual speed
 - `mp.dosingpump` (bool): Start/stop dosingpump
 - `mp.dosingspeed` (float): Set dosingpump speed
 - `mp.water` (float): Set water flow (l/h)
@@ -62,8 +62,8 @@ do.running = True  # Start the dosingpump
 
 #### Printhead
 - `ph.running` (bool): Start/stop the printhead
-- `ph.speed` (int, 1/min): Set speed
-- `ph.real_speed` (int, 1/min): Get actual speed
+- `ph.speed` (float, 1/min): Set speed
+- `ph.real_speed` (float, 1/min): Get actual speed
 - `ph.cleaning` (bool): Start/stop cleaning water
 - `ph.real_pressure` (float): Get pressure (bar) (if optional sensor installed)
 - `ph.error` (bool): Get Error state
