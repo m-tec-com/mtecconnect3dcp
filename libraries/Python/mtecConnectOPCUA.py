@@ -1,4 +1,5 @@
-from opcua import Client, ua #https://github.com/FreeOpcUa/python-opcua
+from asyncua.sync import Client, SyncNode
+from asyncua import ua #https://github.com/FreeOpcUa/asyncua
 
 class Machine:
     """Initializes the Machine class
@@ -15,12 +16,12 @@ class Machine:
         ip: str; IP-Adress of the machine
     """
     def connect(self, ip: str):
-        self.reader = Client(ip)
-        self.writer = Client(ip)
+        self.reader = Client(url=ip)
+        self.writer = Client(url=ip)
         self.reader.connect()
         self.writer.connect()
-        self.reader.load_type_definitions()
-        self.writer.load_type_definitions()
+        self.reader.load_data_type_definitions()
+        self.writer.load_data_type_definitions()
         self.subscribe("Livebit2extern", self.changeLivebit, 500)
     
     """Changes the value of a OPCUA Variable
@@ -30,7 +31,6 @@ class Machine:
         typ: str; string of variable type (bool, uint16, int32, float)
     """
     def change(self, parameter: str, value: any, typ: str):
-        #print(parameter, value, typ)
         if typ == "bool":
             t = ua.VariantType.Boolean
             value = bool(value)
@@ -45,14 +45,16 @@ class Machine:
             value = float(value)
         else:
             return
-        self.writer.get_node(self.baseNode + parameter).set_value(ua.Variant(value, t))
+        node = self.writer.get_node(self.baseNode + parameter)
+        node.set_value(ua.Variant(value, t))
 
     """Reades the value of a OPCUA Variable
     Args:
         variable: str; Variable to read
     """
     def read(self, parameter: str) -> any:
-        return self.reader.get_node(self.baseNode + parameter).get_value()
+        node = self.reader.get_node(self.baseNode + parameter)
+        return node.get_value()
 
     """Subscribes to given parameter
     Args:
@@ -91,24 +93,28 @@ class Mixingpump(Machine):
     
     """Changes / reads the speed setting of the mixingpump
     Args / returns:
-        speed: float; Speed in %
+        speed: float; Speed in Hz
     """
     @property
     def speed(self) -> float:
-        return self.read("set_value_mixingpump") * 100 / 65535 # 100% = 65535, 0% = 0
+        return (self.read("set_value_mixingpump") * 30) / 65535 + 20 # 50Hz = 65535, 20Hz
     @speed.setter
     def speed(self, speed: float):
-        hz = speed * 65535 / 100 # 100% = 65535, 0% = 0
+        if speed < 20:
+            raise ValueError("Speed in Hz cannot be below 20")
+        if speed > 50:
+            raise ValueError("Speed in Hz cannot be above 50")
+        hz = (speed-20) * 65535 / 30 # 50Hz = 65535, 20Hz = 0
         self.change("set_value_mixingpump", int(hz), "uint16")
     
     """Reads the real speed of the mixingpump
     Returns:
-        speed: float; Speed in %
+        speed: float; Speed in Hz
     """
     @property
     def real_speed(self) -> float:
         speed = self.read("actual_value_mixingpump")
-        return speed * 100 / 65535 # 100% = 65535, 0% = 0
+        return speed * 50 / 65535 # 50Hz = 65535, 0Hz = 0
 
     """Starts / Stops the dosingpump
     Args / returns:
@@ -264,8 +270,7 @@ class Mixingpump(Machine):
     """
     def setDigital(self, pin: int, value: bool):
         if pin < 1 or pin > 8:
-            print("Pin number (" + str(pin) + ") out of range (1 - 8)")
-            return 
+            raise ValueError(f"Pin number ({pin}) out of range (1 - 8)")
         self.change("reserve_DO_" + str(pin), value, "bool")
     """Reads the state of a Digital Input
     Args:
@@ -275,8 +280,7 @@ class Mixingpump(Machine):
     """
     def getDigital(self, pin: int) -> bool:
         if pin < 1 or pin > 10:
-            print("Pin number (" + str(pin) + ") out of range (1 - 10)")
-            return
+            raise ValueError(f"Pin number ({pin}) out of range (1 - 10)")
         return self.read("reserve_DI_" + str(pin))
 
     """Changes the state of a Analog Output
@@ -286,8 +290,7 @@ class Mixingpump(Machine):
     """
     def setAnalog(self, pin: int, value: int):
         if pin < 1 or pin > 2:
-            print("Pin number (" + str(pin) + ") out of range (1 - 2)")
-            return 
+            raise ValueError(f"Pin number ({pin}) out of range (1 - 2)")
         self.change("reserve_AO_" + str(pin), value, "uint16")
     """Reads the state of a Analog Input
     Args:
@@ -297,8 +300,7 @@ class Mixingpump(Machine):
     """
     def getAnalog(self, pin: int) -> int:
         if pin < 1 or pin > 5:
-            print("Pin number (" + str(pin) + ") out of range (1 - 5)")
-            return
+            raise ValueError(f"Pin number ({pin}) out of range (1 - 5)")
         return self.read("reserve_AI_" + str(pin))
     
 
@@ -315,9 +317,9 @@ class Mixingpump(Machine):
     def setSpeedDosingpump(self, speed):
         self.dosingspeed = speed
     def setSpeed(self, speed):
-        self.speed = speed
+        self.speed = speed * 30 / 100 + 20 # 100% = 50Hz, 0% = 20Hz
     def getSpeed(self):
-        return self.real_speed/2 # return in Hz (100% = 50Hz)
+        return self.real_speed
     def setWater(self, speed):
         self.water = speed
     def isError(self):
@@ -441,10 +443,10 @@ class Dosingpump(Machine):
     """
     @property
     def speed(self) -> int:
-        return self.read("set_value_additive")
+        return self.read("set_value_dosingpump")
     @speed.setter
     def speed(self, speed: int):
-        self.change("set_value_additive", int(speed), "float")
+        self.change("set_value_dosingpump", int(speed), "float")
 
     """Reads the real speed of the dosingpump
     Returns:

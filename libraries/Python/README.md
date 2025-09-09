@@ -4,13 +4,17 @@ This library provides a simple interface to connect and control m-tec machines v
 
 ## Installation
 
+
 1. Install the required dependency:
 
 ```
-pip install opcua
+pip install asyncua
 ```
 
+
 2. Place the `mtecConnectOPCUA.py` file in your project or add the `libraries/Python` folder to your Python path.
+
+**Note:** This library now uses [asyncua](https://github.com/FreeOpcUa/asyncua) with its synchronous wrapper. You do not need to change your code, but make sure to install `asyncua` instead of `opcua`.
 
 ## Usage
 

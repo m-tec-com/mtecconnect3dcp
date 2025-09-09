@@ -1,4 +1,7 @@
 import time
+
+# This example uses the m-tecConnectOPCUA library, which now relies on asyncua's synchronous wrapper.
+# Make sure to install asyncua: pip install asyncua
 from mtecConnectOPCUA import Mixingpump, Printhead, Dosingpump
 
 mp = Mixingpump()
