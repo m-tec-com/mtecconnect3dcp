@@ -517,22 +517,6 @@ class Printhead(Machine):
         return self.read("actual_value_printhead")
 
     @property
-    def cleaning(self) -> bool:
-        """
-        bool: True if cleaning water is running, False otherwise.
-        """
-        return self.read("state_solenoid_valve")
-    @cleaning.setter
-    def cleaning(self, state: bool):
-        """
-        Set the cleaning water state.
-
-        Args:
-            state (bool): True to start, False to stop.
-        """
-        self.change("state_solenoid_valve", state, "bool")
-
-    @property
     def real_pressure(self) -> float:
         """
         float: Real pressure of the printhead in bar (if sensor installed).
@@ -614,6 +598,22 @@ class Dosingpump(Machine):
         float: Real pressure of the dosingpump in bar.
         """
         return self.read("actual_value_pressure_dosingpump")
+
+    @property
+    def cleaning(self) -> bool:
+        """
+        bool: True if cleaning water is running, False otherwise.
+        """
+        return self.read("state_solenoid_valve")
+    @cleaning.setter
+    def cleaning(self, state: bool):
+        """
+        Set the cleaning water state.
+
+        Args:
+            state (bool): True to start, False to stop.
+        """
+        self.change("state_solenoid_valve", state, "bool")
 
     @property
     def error(self) -> bool:
