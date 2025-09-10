@@ -16,10 +16,10 @@ pip install mtecconnect3dcp
 See `/Python/example.py` for a full example. Below is a minimal usage guide:
 
 ```python
-from mtecconnect3dcp import Mixingpump, Printhead, Dosingpump, Pump
+from mtecconnect3dcp import Printhead, Dosingpump, Pump, Duomix, DuomixPlus, Smp
 
 # Connect to a Mixingpump
-mp = Mixingpump()
+mp = Duomix()
 mp.connect("opc.tcp://<MIXINGPUMP_IP>:4840")
 mp.speed = 50  # Set speed to 50Hz (20-50Hz range)
 mp.running = True  # Start the mixingpump
@@ -68,6 +68,7 @@ pump.running = True  # Start the pump
 | real_water               | float        | water flow         | l/h       |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
 | real_water_temperature   | float        | water temperature  | °C        |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
 | real_temperature         | float        | mortar temperature | °C        |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| silolevel                | float        | Silo level         | %         |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
 | getDigital(pin)          | function     | Digital input      | bool      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
 | getAnalog(pin)           | function     | Analog input       | 0 - 65535 |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
 | voltage                  | bool         | Voltage            |           |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |  :x:   |  :x:   |
@@ -75,20 +76,24 @@ pump.running = True  # Start the pump
 | torque                   | bool         | Torque             |           |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |  :x:   |  :x:   |
 
 
+
 ### Status (GET)
 
 | Function/Property        | Type         | Description                        | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
 |--------------------------|--------------|------------------------------------|------|---------|----------|-----|------------|-----------|
-| error                    | bool         | Get error state                    |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| error_no                 | int          | Get error number                   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| ready                    | bool         | Ready for operation                |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| mixing                   | bool         | Get is mixing                      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| pumping                  | bool         | Get is pumping                     |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| pumping_net              | bool         | Get is pumping via net             |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| pumping_fc               | bool         | Get is pumping via FC              |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| remote                   | bool         | Get is hardware remote connected   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| solenoidvalve            | bool         | Get is solenoid valve open         |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| waterpump                | bool         | Get is pumping waterpump running   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| error                    | bool         | error state                    |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
+| error_no                 | int          | error number                   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
+| ready                    | bool         | Ready for operation            |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
+| mixing                   | bool         | mixing                         |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| pumping                  | bool         | pumping                        |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| pumping_net              | bool         | pumping via net                |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| pumping_fc               | bool         | pumping via FC                 |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| remote                   | bool         | hardware remote connected      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| solenoidvalve            | bool         | solenoid valve open            |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| waterpump                | bool         | pumping waterpump running      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| rotaryvalve              | bool         | rotary valve running           |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
+| compressor               | bool         | compressor running             |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
+| vibrator                 | (bool, bool) | vibrator running (vib1, vib2)  |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
 
 ### Subscriptions
 

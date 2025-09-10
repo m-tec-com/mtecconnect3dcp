@@ -89,7 +89,7 @@ class OPCUAMachine:
             print(f"Feature '{parameter}' is not supported on this machine.")
             return False
     
-    def safe_read(self, parameter: str, default=None) -> Any:
+    def safe_read(self, parameter: str, default: Any) -> Any:
         """
         Reads the value of an OPC-UA variable, with feature-not-supported feedback.
 
