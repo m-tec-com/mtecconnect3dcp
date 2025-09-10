@@ -76,14 +76,14 @@ class Pump(ModbusMachine):
             return self.write("FA00", 0x0000)
 
     @property
-    def frequency(self) -> float:
+    def _frequency(self) -> float:
         """
         float: Frequency of the pump in Hz.
         """
         return self.read("FD00") / 100
 
-    @frequency.setter
-    def frequency(self, value: float):
+    @_frequency.setter
+    def _frequency(self, value: float):
         """
         Set the frequency of the pump.
 
@@ -125,8 +125,8 @@ class Pump(ModbusMachine):
         float: Real speed of the pump in Hz. Negative values indicate reverse direction.
         """
         if self.reverse:
-            return -self.frequency
-        return self.frequency
+            return -self._frequency
+        return self._frequency
 
     @property
     def speed(self) -> float:
@@ -152,7 +152,7 @@ class Pump(ModbusMachine):
                 self.reverse = True
             elif value > 0 and not self._last_speed > 0:
                 self.reverse = False
-            self.frequency = abs(value)
+            self._frequency = abs(value)
         self._last_speed = value
 
 

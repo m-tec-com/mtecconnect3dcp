@@ -6,7 +6,7 @@ from mtecconnect3dcp import Mixingpump, Printhead, Dosingpump
 
 mp = Mixingpump()
 mp.connect("opc.tcp://10.129.4.73:4840") # duo-mix 3DCP+
-mp.speed = 50 # % ( = 25Hz)
+mp.speed = 50 # Hz (20-50Hz)
 
 ph = Printhead()
 ph.connect("opc.tcp://10.129.4.74:4840") # flow-matic PX control

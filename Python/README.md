@@ -21,7 +21,7 @@ from mtecconnect3dcp import Mixingpump, Printhead, Dosingpump, Pump
 # Connect to a Mixingpump
 mp = Mixingpump()
 mp.connect("opc.tcp://<MIXINGPUMP_IP>:4840")
-mp.speed = 50  # Set speed to 50%
+mp.speed = 50  # Set speed to 50Hz (20-50Hz range)
 mp.running = True  # Start the mixingpump
 
 # Connect to a Printhead
@@ -39,63 +39,63 @@ dp.running = True  # Start the dosingpump
 # Connect to a Pump (P20/P50 via Modbus)
 pump = Pump()
 pump.connect(port="COM7")
-pump.speed = 25  # Set speed
+pump.speed = 25  # Set speed to 25Hz
 pump.running = True  # Start the pump
 ```
 
+## Supported Properties and Functions by Machine
 
-### Common Properties and Methods
+### Control
 
-#### Mixingpump
-- `mp.running` (bool): Start/stop the mixingpump
-- `mp.speed` (int, Hz): Set speed ( :warning: 20 - 50)
-- `mp.real_speed` (float, Hz): Get actual speed
-- `mp.dosingpump` (bool): Start/stop dosingpump
-- `mp.dosingspeed` (float): Set dosingpump speed
-- `mp.water` (float): Set water flow (l/h)
-- `mp.real_water` (float): Get actual water flow (l/h)
-- `mp.real_water_temperature` (float): Get water temperature (°C)
-- `mp.real_temperature` (float): Get mortar temperature (°C)
-- `mp.real_pressure` (float): Get pressure (bar)
-- `mp.error` (bool): Get Error state
-- `mp.error_no` (int): Get Error number
-- `mp.ready` (bool): Get Ready for operation
+| Function/Property         | Get | Set | Type         | Description                        | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
+|--------------------------|-----|-----|--------------|------------------------------------|------|---------|----------|-----|------------|-----------|
+| running                  |  :white_check_mark:  |  :white_check_mark:  | bool         | Start/stop machine                 |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
+| reverse                  |  :white_check_mark:  |  :white_check_mark:  | bool         | Set/Get running reverse   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |  :x:   |  :x:   |
+| speed                    |  :white_check_mark:  |  :white_check_mark:  | float/int    | Set/Get speed                      |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
+| dosingpump               |  :white_check_mark:  |  :white_check_mark:  | bool         | Start/stop dosingpump              |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| dosingspeed              |  :white_check_mark:  |  :white_check_mark:  | float        | Set dosingpump speed               |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| water                    |  :white_check_mark:  |  :white_check_mark:  | float        | Set water flow (l/h)               |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| cleaning                 |  :white_check_mark:  |  :white_check_mark:  | bool         | Start/stop cleaning water          |  :x:   |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |
+| setDigital(pin, value)   |  :x:  |  :white_check_mark:  | function     | Set digital output                 |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| setAnalog(pin, value)    |  :x:  |  :white_check_mark:  | function     | Set analog output                  |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
 
-#### Printhead
-- `ph.running` (bool): Start/stop the printhead
-- `ph.speed` (float, 1/min): Set speed
-- `ph.real_speed` (float, 1/min): Get actual speed
-- `ph.cleaning` (bool): Start/stop cleaning water
-- `ph.real_pressure` (float): Get pressure (bar) (if optional sensor installed)
-- `ph.error` (bool): Get Error state
-- `ph.error_no` (int): Get Error number
-- `ph.ready` (bool): Get Ready for operation
+### Measure (GET)
+
+| Function/Property        | Type         | Description        | Unit      | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
+|--------------------------|--------------|--------------------|-----------|-----------------|--------------|---------------|----------|----------------------------|---------------------------|
+| real_speed               | float        | speed              |           |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
+| real_pressure            | float        | pressure           | bar       |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark: (optional)   |
+| real_water               | float        | water flow         | l/h       |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| real_water_temperature   | float        | water temperature  | °C        |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| real_temperature         | float        | mortar temperature | °C        |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| getDigital(pin)          | function     | Digital input      | bool      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| getAnalog(pin)           | function     | Analog input       | 0 - 65535 |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| voltage                  | bool         | Voltage            |           |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |  :x:   |  :x:   |
+| current                  | bool         | Current            |           |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |  :x:   |  :x:   |
+| torque                   | bool         | Torque             |           |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |  :x:   |  :x:   |
 
 
-#### Dosingpump
-- `dp.running` (bool): Start/stop the dosingpump
-- `dp.speed` (float): Set speed (ml/min)
-- `dp.real_speed` (float): Get actual speed (ml/min)
-- `dp.real_pressure` (float): Get pressure (bar)
-- `dp.error` (bool): Get Error state
-- `dp.error_no` (int): Get Error number
-- `dp.ready` (bool): Get Ready for operation
+### Status (GET)
 
-#### Pump (P20/P50 via Modbus)
-- `pump.running` (bool): Start/stop the pump
-- `pump.speed` (float): Set speed (unit depends on model)
-- `pump.real_speed` (float): Get actual speed
-- `pump.error` (bool): Get Error state
-- `pump.error_no` (int): Get Error number
-- `pump.ready` (bool): Get Ready for operation
-
-### Digital and Analog I/O (Mixingpump)
-- `mp.setDigital(pin, value)`: Set digital output (pin 1-8)
-- `mp.getDigital(pin)`: Read digital input (pin 1-10)
-- `mp.setAnalog(pin, value)`: Set analog output (pin 1-2, value 0-65535)
-- `mp.getAnalog(pin)`: Read analog input (pin 1-5)
+| Function/Property        | Type         | Description                        | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
+|--------------------------|--------------|------------------------------------|------|---------|----------|-----|------------|-----------|
+| error                    | bool         | Get error state                    |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
+| error_no                 | int          | Get error number                   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
+| ready                    | bool         | Ready for operation                |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
+| mixing                   | bool         | Get is mixing                      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| pumping                  | bool         | Get is pumping                     |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| pumping_net              | bool         | Get is pumping via net             |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| pumping_fc               | bool         | Get is pumping via FC              |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| remote                   | bool         | Get is hardware remote connected   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| solenoidvalve            | bool         | Get is solenoid valve open         |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| waterpump                | bool         | Get is pumping waterpump running   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
 
 ### Subscriptions
+
+| Function/Property        | Type         | Description                        | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
+|--------------------------|--------------|------------------------------------|------|---------|----------|-----|------------|-----------|
+| subscribe(var, cb, ms)   | function     | Subscribe to variable changes      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+
 You can subscribe to OPC UA variables for real-time updates:
 
 ```python
@@ -108,27 +108,3 @@ mp.subscribe("Livebit2extern", callback, 500)  # Check every 500 ms
 Check the OPC-UA description provided by m-tec for all information about all variables and their names.
 
 ---
-
-## Supported Properties and Functions by Machine
-
-| Function/Property         | Get | Set | Type         | Description                        | Pump | Mixingpump | Dosingpump | Printhead |
-|--------------------------|-----|-----|--------------|------------------------------------|------|------------|------------|-----------|
-| running                  |  :white_check_mark:  |  :white_check_mark:  | bool         | Start/stop machine                 |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| speed                    |  :white_check_mark:  |  :white_check_mark:  | float/int    | Set/Get speed                      |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| real_speed               |  :white_check_mark:  |  :x:  | float        | Get actual speed                   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| error                    |  :white_check_mark:  |  :x:  | bool         | Get error state                    |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| error_no                 |  :white_check_mark:  |  :x:  | int          | Get error number                   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| ready                    |  :white_check_mark:  |  :x:  | bool         | Ready for operation                |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| real_pressure            |  :white_check_mark:  |  :x:  | float        | Get pressure (bar)                 |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| dosingpump               |  :white_check_mark:  |  :white_check_mark:  | bool         | Start/stop dosingpump              |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| dosingspeed              |  :white_check_mark:  |  :white_check_mark:  | float        | Set dosingpump speed               |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| water                    |  :white_check_mark:  |  :white_check_mark:  | float        | Set water flow (l/h)               |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| real_water               |  :white_check_mark:  |  :x:  | float        | Get actual water flow (l/h)        |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| real_water_temperature   |  :white_check_mark:  |  :x:  | float        | Get water temperature (°C)         |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| real_temperature         |  :white_check_mark:  |  :x:  | float        | Get mortar temperature (°C)        |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| cleaning                 |  :white_check_mark:  |  :white_check_mark:  | bool         | Start/stop cleaning water          |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |
-| setDigital(pin, value)   |  :x:  |  :white_check_mark:  | function     | Set digital output                 |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| getDigital(pin)          |  :white_check_mark:  |  :x:  | function     | Read digital input                 |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| setAnalog(pin, value)    |  :x:  |  :white_check_mark:  | function     | Set analog output                  |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| getAnalog(pin)           |  :white_check_mark:  |  :x:  | function     | Read analog input                  |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| subscribe(var, cb, ms)   |  :x:  |  :white_check_mark:  | function     | Subscribe to variable changes      |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
