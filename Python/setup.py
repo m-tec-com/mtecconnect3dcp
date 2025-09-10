@@ -22,7 +22,7 @@ setup(
     ],
     python_requires=">=3.7",
     include_package_data=True,
-    keywords="opcua m-tec automation mixingpump printhead dosingpump",
+    keywords="opcua m-tec automation mixingpump pump printhead dosingpump duo-mix flow-matic smp p20 p50",
     project_urls={
         "Source": "https://github.com/m-tec-com/mtecConnect3DCP",
         "Tracker": "https://github.com/m-tec-com/mtecConnect3DCP/issues",
