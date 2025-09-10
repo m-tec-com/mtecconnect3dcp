@@ -1,9 +1,9 @@
-from .Machine import Machine
+from .OPCUAMachine import OPCUAMachine
 
-class Dosingpump(Machine):
+class Dosingpump(OPCUAMachine):
     """
     Class for controlling a dosing pump via OPC-UA.
-    Inherits from Machine.
+    Inherits from OPCUAMachine.
     """
     @property
     def running(self) -> bool:

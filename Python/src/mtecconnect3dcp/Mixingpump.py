@@ -1,9 +1,9 @@
-from .Machine import Machine
+from .OPCUAMachine import OPCUAMachine
 
-class Mixingpump(Machine):
+class Mixingpump(OPCUAMachine):
     """
     Class for controlling a mixing pump via OPC-UA.
-    Inherits from Machine.
+    Inherits from OPCUAMachine.
     """
     @property
     def running(self) -> bool:
@@ -62,7 +62,7 @@ class Mixingpump(Machine):
         """
         bool: True if the dosingpump is running, False otherwise.
         """
-        return bool(self.read("state_dosingpump_on"))
+        return bool(self.safe_read("state_dosingpump_on", False))
     @dosingpump.setter
     def dosingpump(self, state: bool):
         """
@@ -71,7 +71,7 @@ class Mixingpump(Machine):
         Args:
             state (bool): True to start, False to stop.
         """
-        self.change("state_dosingpump_on", state, "bool")
+        self.safe_change("state_dosingpump_on", state, "bool")
 
     """Changes / reads the speed setting of the dosingpump
     Args / returns:
@@ -82,7 +82,7 @@ class Mixingpump(Machine):
         """
         float: Speed setting of the dosingpump in %.
         """
-        return self.read("set_value_dosingpump")
+        return self.safe_read("set_value_dosingpump", 0.0)
     @dosingspeed.setter
     def dosingspeed(self, speed: float):
         """
@@ -91,7 +91,7 @@ class Mixingpump(Machine):
         Args:
             speed (float): Speed in %.
         """
-        self.change("set_value_dosingpump", float(speed), "float")
+        self.safe_change("set_value_dosingpump", float(speed), "float")
 
     """Changes / reads the water setting of the mixingpump
     Args / returns:
@@ -102,7 +102,7 @@ class Mixingpump(Machine):
         """
         float: Water setting of the mixingpump in l/h.
         """
-        return self.read("set_value_water_flow")
+        return self.safe_read("set_value_water_flow", 0.0)
     @water.setter
     def water(self, speed: float):
         """
@@ -111,7 +111,7 @@ class Mixingpump(Machine):
         Args:
             speed (float): Amount in l/h.
         """
-        self.change("set_value_water_flow", float(speed), "float")
+        self.safe_change("set_value_water_flow", float(speed), "float")
 
     """Reads the real amount of water
     Returns:
@@ -122,7 +122,7 @@ class Mixingpump(Machine):
         """
         float: Real amount of water in l/h.
         """
-        return float(self.read("actual_value_water_flow"))
+        return float(self.safe_read("actual_value_water_flow", 0.0))
     
     """Reads the real temperature of the water
     Returns:
@@ -133,7 +133,7 @@ class Mixingpump(Machine):
         """
         float: Real temperature of the water in °C.
         """
-        return float(self.read("actual_value_water_temp"))
+        return float(self.safe_read("actual_value_water_temp", 0.0))
 
     """Reads the real temperature of the mortar
     Returns:
@@ -144,7 +144,7 @@ class Mixingpump(Machine):
         """
         float: Real temperature of the mortar in °C.
         """
-        return float(self.read("actual_value_mat_temp"))
+        return float(self.safe_read("actual_value_mat_temp", 0.0))
 
     """Reads the real pressure of the mortar
     Returns:
@@ -155,7 +155,7 @@ class Mixingpump(Machine):
         """
         float: Real pressure of the mortar in bar.
         """
-        return float(self.read("actual_value_pressure"))
+        return float(self.safe_read("actual_value_pressure", 0.0))
 
     """Reads if machine is in error state
     Returns:
@@ -274,21 +274,23 @@ class Mixingpump(Machine):
         Changes the state of a digital output.
 
         Args:
-            pin (int): Pin number (1 - 8).
+            pin (int): Pin number.
             value (bool): True for high, False for low.
 
         Raises:
             ValueError: If pin is out of range.
         """
-        if pin < 1 or pin > 8:
-            raise ValueError(f"Pin number ({pin}) out of range (1 - 8)")
-        self.change("reserve_DO_" + str(pin), value, "bool")
+        try:
+            self.change(f"reserve_DO_{pin}", value, "bool")
+        except KeyError:
+            raise ValueError(f"Pin number ({pin}) out of range")
+        
     def getDigital(self, pin: int) -> bool:
         """
         Reads the state of a digital input.
 
         Args:
-            pin (int): Pin number (1 - 10).
+            pin (int): Pin number.
 
         Returns:
             bool: True for high, False for low.
@@ -296,23 +298,27 @@ class Mixingpump(Machine):
         Raises:
             ValueError: If pin is out of range.
         """
-        if pin < 1 or pin > 10:
-            raise ValueError(f"Pin number ({pin}) out of range (1 - 10)")
-        return self.read("reserve_DI_" + str(pin))
+        try:
+            return self.read(f"reserve_DI_{pin}")
+        except KeyError:
+            raise ValueError(f"Pin number ({pin}) out of range")
+        
     def setAnalog(self, pin: int, value: int):
         """
         Changes the state of an analog output.
 
         Args:
-            pin (int): Pin number (1 - 2).
+            pin (int): Pin number.
             value (int): Value to set (0 to 65535).
 
         Raises:
             ValueError: If pin is out of range.
         """
-        if pin < 1 or pin > 2:
-            raise ValueError(f"Pin number ({pin}) out of range (1 - 2)")
-        self.change("reserve_AO_" + str(pin), value, "uint16")
+        try:
+            self.change(f"reserve_AO_{pin}", value, "uint16")
+        except KeyError:
+            raise ValueError(f"Pin number ({pin}) out of range")
+        
     def getAnalog(self, pin: int) -> int:
         """
         Reads the state of an analog input.
@@ -326,9 +332,10 @@ class Mixingpump(Machine):
         Raises:
             ValueError: If pin is out of range.
         """
-        if pin < 1 or pin > 5:
-            raise ValueError(f"Pin number ({pin}) out of range (1 - 5)")
-        return self.read("reserve_AI_" + str(pin))
+        try:
+            return self.read(f"reserve_AI_{pin}")
+        except KeyError:
+            raise ValueError(f"Pin number ({pin}) out of range")
     
 
 

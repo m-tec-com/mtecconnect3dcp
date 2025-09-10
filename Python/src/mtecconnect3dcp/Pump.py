@@ -1,0 +1,169 @@
+from .ModbusMachine import ModbusMachine
+
+class Pump(ModbusMachine):
+    """
+    Class for controlling a pump via Modbus.
+    Inherits from ModbusMachine.
+    """
+    # Class-level bit masks for status decoding
+    _RUNNING_MASK = 0x0400
+    _REVERSE_MASK = 0x0200
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._last_speed: float = 0.0
+        self._last_running: bool = False
+        self._last_reverse: bool = False
+
+    @property
+    def ready(self) -> bool:
+        """
+        bool: True if the machine is ready for operation (on, remote, mixer and mixingpump on).
+        """
+        switches = self.read("FD06")
+        return ((switches % 32) - (switches % 16) != 0)
+
+    @property
+    def running(self) -> bool:
+        """
+        bool: True if the pump is running, False otherwise.
+        """
+        return (self.read("FA00") & self._RUNNING_MASK) != 0
+
+    @running.setter
+    def running(self, state: bool):
+        """
+        Set the running state of the pump.
+
+        Args:
+            state (bool): True to start, False to stop.
+        """
+        self._last_running = state
+        if state:
+            if self._last_reverse:
+                v = self.write("FA00", 0xC600)
+            else:
+                v = self.write("FA00", 0xC400)
+            self.keepalive()
+            return v
+        else:
+            v = self.write("FA00", 0x0000)
+            self.stop_keepalive()
+            return v
+
+    @property
+    def reverse(self) -> bool:
+        """
+        bool: True if the pump is running in reverse, False otherwise.
+        """
+        return (self.read("FA00") & self._REVERSE_MASK) != 0
+
+    @reverse.setter
+    def reverse(self, state: bool):
+        """
+        Set the running direction of the pump.
+
+        Args:
+            state (bool): True for reverse, False for forward.
+        """
+        self._last_reverse = state
+        if self._last_running:
+            if state:
+                return self.write("FA00", 0xC600)
+            else:
+                return self.write("FA00", 0xC400)
+        else:
+            return self.write("FA00", 0x0000)
+
+    @property
+    def frequency(self) -> float:
+        """
+        float: Frequency of the pump in Hz.
+        """
+        return self.read("FD00") / 100
+
+    @frequency.setter
+    def frequency(self, value: float):
+        """
+        Set the frequency of the pump.
+
+        Args:
+            value (float): Frequency in Hz.
+        """
+        return self.write("FA01", int(value * 100))
+
+    @property
+    def voltage(self) -> float:
+        """
+        float: Voltage of the pump in V.
+        """
+        return self.read("FD05") / 100
+
+    @property
+    def current(self) -> float:
+        """
+        float: Current of the pump in A.
+        """
+        return self.read("FD03") / 100
+
+    @property
+    def torque(self) -> float:
+        """
+        float: Torque of the pump in Nm.
+        """
+        return self.read("FD18") / 100
+
+    def emergency_stop(self):
+        """
+        Emergency stop for the pump.
+        """
+        return self.write("FA00", 0x1000)
+
+    @property
+    def speed(self) -> float:
+        """
+        float: Speed of the pump in Hz. Negative values indicate reverse direction.
+        """
+        if self._last_reverse:
+            return -self.frequency
+        return self.frequency
+
+    @speed.setter
+    def speed(self, value: float):
+        """
+        Set the speed of the pump.
+
+        Args:
+            value (float): Speed in Hz. Negative values indicate reverse direction.
+        """
+        if value == self._last_speed:
+            return
+        if value == 0:
+            self.running = False
+        else:
+            if value < 0 and not self._last_speed < 0:
+                self.reverse = True
+            elif value > 0 and not self._last_speed > 0:
+                self.reverse = False
+            self.frequency = abs(value)
+        self._last_speed = value
+
+
+    """Backward compatibility"""
+    def start(self):
+        """
+        Starts the pump. (Legacy API)
+        """
+        return self.write("FA00", 0xC400)
+
+    def start_reverse(self):
+        """
+        Starts the pump in reverse. (Legacy API)
+        """
+        return self.write("FA00", 0xC600)
+
+    def stop(self):
+        """
+        Stops the pump. (Legacy API)
+        """
+        return self.write("FA00", 0x0000)

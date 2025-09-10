@@ -1,9 +1,9 @@
-from .Machine import Machine
+from .OPCUAMachine import OPCUAMachine
 
-class Printhead(Machine):
+class Printhead(OPCUAMachine):
     """
     Class for controlling a printhead via OPC-UA.
-    Inherits from Machine.
+    Inherits from OPCUAMachine.
     """
     @property
     def running(self) -> bool:

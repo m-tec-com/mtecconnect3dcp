@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="mtecconnect3dcp",
-    version="0.0.4",
+    version="0.0.11",
     author="Paul Richter",
     author_email="paul.richter@m-tec.com",
     description="OPC-UA client classes for m-tec machines (Mixingpump, Printhead, Dosingpump)",
@@ -12,7 +12,8 @@ setup(
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=[
-        "asyncua>=1.0.0"
+        "asyncua>=1.0.0",
+        "pyserial>=3.5",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

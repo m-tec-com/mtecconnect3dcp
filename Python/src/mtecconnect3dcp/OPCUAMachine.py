@@ -1,27 +1,36 @@
 from asyncua.sync import Client #https://github.com/FreeOpcUa/asyncua
 from asyncua import ua #https://github.com/FreeOpcUa/asyncua
 
-class Machine:
+from typing import Optional, Callable, Any
+
+class OPCUAMachine:
     """
     Base class for OPC-UA machine communication.
 
     Args:
+        ip (str): IP address of the machine.
         baseNode (str): Base node of the machine.
     """
-    def __init__(self, baseNode = "ns=4;s=|var|B-Fortis CC-Slim S04.Application.GVL_OPC."):
+    def __init__(self, ip: Optional[str] = None, baseNode = "ns=4;s=|var|B-Fortis CC-Slim S04.Application.GVL_OPC."):
         self.baseNode = baseNode
         self.liveBitNode = "Livebit2machine"
         self.connected = False
+        self.ip = ip
 
-    def connect(self, ip: str):
+    def connect(self, ip: Optional[str] = None):
         """
         Connects to the machine using the provided IP address.
 
         Args:
-            ip (str): IP address of the machine.
+            ip (str): IP address of the machine. If not provided, uses the one from init.
         """
-        self.reader = Client(url=ip)
-        self.writer = Client(url=ip)
+        if ip:
+            self.ip = ip
+        if not self.ip:
+            raise ValueError("No IP address provided.")
+        
+        self.reader = Client(url=self.ip)
+        self.writer = Client(url=self.ip)
         self.reader.connect()
         self.writer.connect()
         self.reader.load_data_type_definitions()
@@ -38,7 +47,7 @@ class Machine:
         try:
             self.read(self.liveBitNode)
         except ua.UaError:
-            raise ua.UaError("Livebit node not found. Machine not supported.")
+            raise ValueError("Livebit node not found. Machine not supported.")
 
         self.subscribe("Livebit2extern", self.changeLivebit, 500)
         
@@ -61,13 +70,49 @@ class Machine:
         print("Connection status changed:", status)
         self.connected = status == ua.StatusCode(0)
 
-    def change(self, parameter: str, value: any, typ: str):
+    def safe_change(self, parameter: str, value: Any, typ: str) -> bool:
+        """
+        Changes the value of an OPC-UA variable, with feature-not-supported feedback.
+
+        Args:
+            parameter (str): Variable to change.
+            value (Any): Value to change the variable to.
+            typ (str): String of variable type ("bool", "uint16", "int32", "float").
+
+        Returns:
+            bool: True if successful, False if not supported.
+        """
+        try:
+            self.change(parameter, value, typ)
+            return True
+        except KeyError:
+            print(f"Feature '{parameter}' is not supported on this machine.")
+            return False
+    
+    def safe_read(self, parameter: str, default=None) -> Any:
+        """
+        Reads the value of an OPC-UA variable, with feature-not-supported feedback.
+
+        Args:
+            parameter (str): Variable to read.
+            default: Value to return if parameter is not available.
+
+        Returns:
+            Any: Value of the variable or default if not available.
+        """
+        try:
+            return self.read(parameter)
+        except KeyError:
+            print(f"Feature '{parameter}' is not supported on this machine.")
+            return default
+    
+    def change(self, parameter: str, value: Any, typ: str):
         """
         Changes the value of an OPC-UA variable.
 
         Args:
             parameter (str): Variable to change.
-            value (any): Value to change the variable to.
+            value (Any): Value to change the variable to.
             typ (str): String of variable type ("bool", "uint16", "int32", "float").
         """
         if not self.connected:
@@ -90,7 +135,7 @@ class Machine:
         node = self.writer.get_node(self.baseNode + parameter)
         node.set_value(ua.Variant(value, t))
 
-    def read(self, parameter: str) -> any:
+    def read(self, parameter: str) -> Any:
         """
         Reads the value of an OPC-UA variable.
 
@@ -98,18 +143,18 @@ class Machine:
             parameter (str): Variable to read.
 
         Returns:
-            any: Value of the variable.
+            Any: Value of the variable.
         """
         node = self.reader.get_node(self.baseNode + parameter)
         return node.get_value()
 
-    def subscribe(self, parameter: str, callback: callable, interval: int):
+    def subscribe(self, parameter: str, callback: Callable, interval: int):
         """
         Subscribes to a given OPC-UA parameter.
 
         Args:
             parameter (str): The OPC-UA parameter to subscribe to.
-            callback (callable): Callback function receiving value and parameter.
+            callback (Callable): Callback function receiving value and parameter.
             interval (int): Interval in ms for checking the parameter.
 
         Returns:
@@ -146,8 +191,8 @@ class OpcuaSubscriptionHandler:
         """
         Args:
             parameter (str): The parameter being subscribed to.
-            callback (callable): Callback function for data changes.
-            status_change_callback (callable, optional): Callback for status changes. Defaults to None.
+            callback (Callable): Callback function for data changes.
+            status_change_callback (Callable, optional): Callback for status changes. Defaults to None.
         """
         self.parameter = parameter
         self.callback = callback
