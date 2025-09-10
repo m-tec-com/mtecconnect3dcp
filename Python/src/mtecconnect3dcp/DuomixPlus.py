@@ -8,10 +8,6 @@ class DuomixPlus (Mixingpump):
     Inherits from Mixingpump.
     """
     
-    """Starts / Stops the dosingpump
-    Args / returns:
-        state: bool; true/false = on/off
-    """
     @property
     def dosingpump(self) -> bool:
         """
@@ -28,10 +24,6 @@ class DuomixPlus (Mixingpump):
         """
         self.safe_change("state_dosingpump_on", state, "bool")
 
-    """Changes / reads the speed setting of the dosingpump
-    Args / returns:
-        speed: float; Speed in %
-    """
     @property
     def dosingspeed(self) -> float:
         """
@@ -48,10 +40,6 @@ class DuomixPlus (Mixingpump):
         """
         self.safe_change("set_value_dosingpump", float(speed), "float")
 
-    """Changes / reads the water setting of the mixingpump
-    Args / returns:
-        speed: float; amount in l/h
-    """
     @property
     def water(self) -> float:
         """
@@ -68,10 +56,6 @@ class DuomixPlus (Mixingpump):
         """
         self.safe_change("set_value_water_flow", float(speed), "float")
 
-    """Reads the real amount of water
-    Returns:
-        speed: float; amount in l/H
-    """
     @property
     def real_water(self) -> float:
         """
@@ -79,10 +63,6 @@ class DuomixPlus (Mixingpump):
         """
         return float(self.safe_read("actual_value_water_flow", 0.0))
     
-    """Reads the real temperature of the water
-    Returns:
-        temperature: float; Temperature in °C
-    """
     @property
     def real_water_temperature(self) -> float:
         """
@@ -90,10 +70,6 @@ class DuomixPlus (Mixingpump):
         """
         return float(self.safe_read("actual_value_water_temp", 0.0))
 
-    """Reads the real temperature of the mortar
-    Returns:
-        temperature: float; Temperature in °C
-    """
     @property
     def real_temperature(self) -> float:
         """
@@ -101,13 +77,113 @@ class DuomixPlus (Mixingpump):
         """
         return float(self.safe_read("actual_value_mat_temp", 0.0))
 
-    """Reads the real pressure of the mortar
-    Returns:
-        pressure: float; Pressure in bar
-    """
     @property
     def real_pressure(self) -> float:
         """
         float: Real pressure of the mortar in bar.
         """
         return float(self.safe_read("actual_value_pressure", 0.0))
+    
+    @property
+    def emergency_stop(self) -> bool:
+        """
+        bool: True if emergency stop is ok, False otherwise.
+        """
+        return bool(self.safe_read("emergency_stop_ok", False))
+
+    @property
+    def on(self) -> bool:
+        """
+        bool: True if the machine is powered on, False otherwise.
+        """
+        return bool(self.safe_read("state_machine_on", False))
+    
+    @property
+    def safety(self) -> tuple:
+        """
+        tuple: (bool, bool) Tuple with (mixingpump, mixer), true if ok.
+        """
+        return (bool(self.safe_read("state_safety_mp", False)), bool(self.safe_read("state_safety_mixer", False)))
+
+    @property
+    def circuitbreaker(self) -> tuple:
+        """
+        tuple: (bool, bool) Tuple with (fc, other). True if the circuit breaker is not tripped
+        """
+        return (bool(self.safe_read("state_circuit_breaker_fc_ok", False)), bool(self.safe_read("state_circuit_breaker_ok", False)))
+    
+    @property
+    def fc(self) -> bool:
+        """
+        bool: True if frequency converter is ok, False otherwise.
+        """
+        return not bool(self.safe_read("state_fc_error", True)) # Inverted
+    
+    @property
+    def water_pressure(self) -> bool:
+        """
+        bool: True if water pressure is ok, False otherwise.
+        """
+        return bool(self.safe_read("state_water_pressure_ok", False))
+    
+    @property
+    def hopper_wet(self) -> bool:
+        """
+        bool: True if pumping hopper level is ok, False otherwise.
+        """
+        return bool(self.safe_read("state_wetmaterialprobe", False))
+    
+    @property
+    def hopper_dry(self) -> bool:
+        """
+        bool: True if dry material hopper level is ok, False otherwise.
+        """
+        return not bool(self.safe_read("state_drymaterialprobe", True)) # Inverted
+    
+    @property
+    def running_local(self) -> bool:
+        """
+        bool: True if the machine is running in local mode
+        """
+        return not bool(self.safe_read("state_remote_start_local", True))
+    
+    @property
+    def phase_reversed(self) -> bool:
+        """
+        bool: True if the phase is reversed, False otherwise.
+        """
+        return bool(self.safe_read("state_relay_rotary_switch", False))
+
+    @property
+    def running_forward(self) -> bool:
+        """
+        bool: True if the mixingpump is running forward.
+        """
+        return bool(self.safe_read("state_fc_fwd", False))
+    
+    @property
+    def running_reverse(self) -> bool:
+        """
+        bool: True if the mixingpump is running in reverse.
+        """
+        return bool(self.safe_read("state_fc_rwd", False))
+    
+    @property
+    def valve(self) -> float:
+        """
+        float: Valve position in %.
+        """
+        return float(self.safe_read("actual_value_water_valve", 0.0))
+
+
+
+
+    """Backward compatibility"""
+    def startDosingpump(self):
+        self.dosingpump = True
+    def stopDosingpump(self):
+        self.dosingpump = False
+    def setSpeedDosingpump(self, speed):
+        self.dosingspeed = speed
+    def setWater(self, speed):
+        self.water = speed

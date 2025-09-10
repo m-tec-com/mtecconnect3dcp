@@ -53,10 +53,6 @@ class Mixingpump(OPCUAMachine):
         speed = self.read("actual_value_mixingpump")
         return speed * 50 / 65535 # 50Hz = 65535, 0Hz = 0
 
-    """Reads if machine is in error state
-    Returns:
-        is error: bool
-    """
     @property
     def error(self) -> bool:
         """
@@ -64,10 +60,6 @@ class Mixingpump(OPCUAMachine):
         """
         return self.read("error")
     
-    """Reads the error number of the machine
-    Returns:
-        error number: int; (0 = none)
-    """
     @property
     def error_no(self) -> int:
         """
@@ -75,10 +67,6 @@ class Mixingpump(OPCUAMachine):
         """
         return self.read("error_no")
 
-    """Checks if the machine is ready for operation (on, remote, mixer and mixingpump on)
-    Returns:
-        ready for operation: bool
-    """
     @property
     def ready(self) -> bool:
         """
@@ -86,10 +74,6 @@ class Mixingpump(OPCUAMachine):
         """
         return self.read("Ready_for_operation")
 
-    """Checks if the mixer is running (in automatic mode)
-    Returns:
-        mixer running: bool
-    """
     @property
     def mixing(self) -> bool:
         """
@@ -97,10 +81,6 @@ class Mixingpump(OPCUAMachine):
         """
         return self.read("aut_mixer")
 
-    """Checks if the mixingpump is running
-    Returns:
-        mixingpump is running: bool
-    """
     @property
     def pumping(self) -> bool:
         """
@@ -108,10 +88,6 @@ class Mixingpump(OPCUAMachine):
         """
         return self.pumping_net or self.pumping_fc
 
-    """Checks if the mixingpump is running on power supply (in automatic mode)
-    Returns:
-        mixingpump is running on power supply: bool
-    """
     @property
     def pumping_net(self) -> bool:
         """
@@ -119,10 +95,6 @@ class Mixingpump(OPCUAMachine):
         """
         return self.read("aut_mixingpump_net")
 
-    """Checks if the mixingpump is running on frequency converter supply (in automatic mode)
-    Returns:
-        mixingpump is running on frequency converter supply: bool
-    """
     @property
     def pumping_fc(self) -> bool:
         """
@@ -130,10 +102,6 @@ class Mixingpump(OPCUAMachine):
         """
         return self.read("aut_mixingpump_fc")
 
-    """Checks if the selenoid valve is open (in automatic mode)
-    Returns:
-        selenoid valve is open: bool
-    """
     @property
     def solenoidvalve(self) -> bool:
         """
@@ -141,10 +109,6 @@ class Mixingpump(OPCUAMachine):
         """
         return self.read("aut_solenoid_valve")
     
-    """Checks if the water pump is running (in automatic mode)
-    Returns:
-        waterpump is running: bool
-    """
     @property
     def waterpump(self) -> bool:
         """
@@ -152,10 +116,6 @@ class Mixingpump(OPCUAMachine):
         """
         return self.read("aut_waterpump")
 
-    """Checks if remote is connected
-    Returns:
-        remote is connected: bool
-    """
     @property
     def remote(self) -> bool:
         """
@@ -240,18 +200,10 @@ class Mixingpump(OPCUAMachine):
         self.running = True
     def stop(self):
         self.running = False
-    def startDosingpump(self):
-        self.dosingpump = True
-    def stopDosingpump(self):
-        self.dosingpump = False
-    def setSpeedDosingpump(self, speed):
-        self.dosingspeed = speed
     def setSpeed(self, speed):
         self.speed = speed * 30 / 100 + 20 # 100% = 50Hz, 0% = 20Hz
     def getSpeed(self):
         return self.real_speed
-    def setWater(self, speed):
-        self.water = speed
     def isError(self):
         return self.error
     def getError(self):

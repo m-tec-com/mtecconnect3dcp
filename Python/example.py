@@ -4,7 +4,7 @@ import time
 # Make sure to install mtecconnect3dcp: pip install mtecconnect3dcp
 from mtecconnect3dcp import Printhead, Dosingpump, Pump, Duomix, DuomixPlus, Smp
 
-mp = Duomix()
+mp = DuomixPlus()
 mp.connect("opc.tcp://10.129.4.73:4840") # duo-mix 3DCP+
 mp.speed = 50 # Hz (20-50Hz)
 

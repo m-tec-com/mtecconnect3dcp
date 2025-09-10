@@ -68,6 +68,7 @@ pump.running = True  # Start the pump
 | real_water               | float        | water flow         | l/h       |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
 | real_water_temperature   | float        | water temperature  | °C        |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
 | real_temperature         | float        | mortar temperature | °C        |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| valve                    | float        | valve position     | %         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
 | silolevel                | float        | Silo level         | %         |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
 | getDigital(pin)          | function     | Digital input      | bool      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
 | getAnalog(pin)           | function     | Analog input       | 0 - 65535 |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
@@ -91,6 +92,18 @@ pump.running = True  # Start the pump
 | remote                   | bool         | hardware remote connected      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
 | solenoidvalve            | bool         | solenoid valve open            |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
 | waterpump                | bool         | pumping waterpump running      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| emergency_stop           | bool         | emergency stop ok              |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| on                       | bool         | machine powered on             |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| safety                   | (bool, bool) | (mixingpump, mixer) safety ok  |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| circuitbreaker           | (bool, bool) | (fc, other) circuit breaker ok |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| fc                       | bool         | frequency converter ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| water_pressure           | bool         | water pressure ok              |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| hopper_wet               | bool         | wet material hopper ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| hopper_dry               | bool         | dry material hopper ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| running_local            | bool         | running in local mode          |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| phase_reversed           | bool         | phase reversed                 |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| running_forward          | bool         | Mixingpump running forward     |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| running_reverse          | bool         | Mixingpump running reverse     |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
 | rotaryvalve              | bool         | rotary valve running           |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
 | compressor               | bool         | compressor running             |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
 | vibrator                 | (bool, bool) | vibrator running (vib1, vib2)  |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
