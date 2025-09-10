@@ -1,8 +1,8 @@
 import time
 
-# This example uses the m-tecConnectOPCUA library, which now relies on asyncua's synchronous wrapper.
-# Make sure to install asyncua: pip install asyncua
-from mtecConnectOPCUA import Mixingpump, Printhead, Dosingpump
+# This example uses the mtecconnect3dcp library, which now relies on asyncua's synchronous wrapper.
+# Make sure to install mtecconnect3dcp: pip install mtecconnect3dcp
+from mtecconnect3dcp import Mixingpump, Printhead, Dosingpump
 
 mp = Mixingpump()
 mp.connect("opc.tcp://10.129.4.73:4840") # duo-mix 3DCP+

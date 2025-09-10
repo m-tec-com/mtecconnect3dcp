@@ -1,28 +1,22 @@
-# m-tecConnectOPCUA Python Library
+# mtecconnect3dcp Python Library
 
 This library provides a simple interface to connect and control m-tec machines via OPC UA. It supports different machine types such as Mixingpump (duo-mix 3DCP (+), SMP 3DCP (+)), Printhead (flow-matic PX), and Dosingpump (flow-matic).
 
 ## Installation
 
 
-1. Install the required dependency:
+1. Install this library:
 
 ```
-pip install asyncua
+pip install mtecconnect3dcp
 ```
 
-
-2. Place the `mtecConnectOPCUA.py` file in your project or add the `libraries/Python` folder to your Python path.
-
-**Note:** This library now uses [asyncua](https://github.com/FreeOpcUa/asyncua) with its synchronous wrapper. You do not need to change your code, but make sure to install `asyncua` instead of `opcua`.
-
-## Usage
 
 ### Example
-See `libraries/Python/example.py` for a full example. Below is a minimal usage guide:
+See `/Python/example.py` for a full example. Below is a minimal usage guide:
 
 ```python
-from mtecConnectOPCUA import Mixingpump, Printhead, Dosingpump
+from mtecconnect3dcp import Mixingpump, Printhead, Dosingpump
 
 # Connect to a Mixingpump
 mp = Mixingpump()
@@ -37,10 +31,10 @@ ph.speed = 1000  # Set speed to 1000 1/min
 ph.running = True  # Start the printhead
 
 # Connect to a Dosingpump
-do = Dosingpump()
-do.connect("opc.tcp://<FLOW-MATIC_IP>:4840")
-do.speed = 30  # Set speed to 30 ml/min
-do.running = True  # Start the dosingpump
+dp = Dosingpump()
+dp.connect("opc.tcp://<FLOW-MATIC_IP>:4840")
+dp.speed = 30  # Set speed to 30 ml/min
+dp.running = True  # Start the dosingpump
 ```
 
 ### Common Properties and Methods
@@ -71,13 +65,13 @@ do.running = True  # Start the dosingpump
 - `ph.ready` (bool): Get Ready for operation
 
 #### Dosingpump
-- `do.running` (bool): Start/stop the dosingpump
-- `do.speed` (float): Set speed (ml/min)
-- `do.real_speed` (float): Get actual speed (ml/min)
-- `do.real_pressure` (float): Get pressure (bar)
-- `do.error` (bool): Get Error state
-- `do.error_no` (int): Get Error number
-- `do.ready` (bool): Get Ready for operation
+- `dp.running` (bool): Start/stop the dosingpump
+- `dp.speed` (float): Set speed (ml/min)
+- `dp.real_speed` (float): Get actual speed (ml/min)
+- `dp.real_pressure` (float): Get pressure (bar)
+- `dp.error` (bool): Get Error state
+- `dp.error_no` (int): Get Error number
+- `dp.ready` (bool): Get Ready for operation
 
 ### Digital and Analog I/O (Mixingpump)
 - `mp.setDigital(pin, value)`: Set digital output (pin 1-8)

@@ -1,4 +1,9 @@
-# m-tecConnectOPC-UA
+
+# mtecconnect3dcp
+
+This repository contains tools and libraries for connecting to m-tec machines using OPC UA.
+
+For the Python client library, see the [Python package README](Python/README.md).
 
 ## Supported Machines
 
@@ -10,15 +15,5 @@ Connect the machine with the control unit (or your PC) with an ethernet cable.
 
 You might have to change the IP-Range of your control unit (or PC).
 
-The IP-Adress of the OPC UA server in the duo-mix connect and SMP connect is `10.129.4.73`.
+The default IP-Adress of the OPC UA server in the m-tec connect duo-mix 3DCP, 3DCP+, SMP 3DCP, and flow-matic control unit is `10.129.4.73`.
 
-## Communication
-
-To get started you can use [uaExpert from Unified Automation](https://www.unified-automation.com/products/development-tools/uaexpert.html).
-
-When controlling the machine externally you have to send a toggle-bit.
-Simply subscribe to `Livebit2extern` and actively update `Livebit2DuoMix` at the duo-mix connect. Check out the [example](examples/05_livebit.py)
-
-> :warning:
->
-> Use `Livebit2machine` instead of `Livebit2DuoMix` at the SMP connect.
