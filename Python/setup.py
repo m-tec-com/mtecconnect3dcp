@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="mtecconnect3dcp",
-    version="0.0.13",
+    version="0.0.14",
     author="Paul Richter",
     author_email="paul.richter@m-tec.com",
     description="OPC-UA client classes for m-tec machines (Mixingpump, Printhead, Dosingpump)",

@@ -10,7 +10,7 @@ class Dosingpump(OPCUAMachine):
         """
         bool: True if the dosingpump is running, False otherwise.
         """
-        return self.read("state_dosingpump_on")
+        return self.read("state_fc_dosingpump")
     @running.setter
     def running(self, state: bool):
         """
@@ -43,6 +43,13 @@ class Dosingpump(OPCUAMachine):
         int: Real speed of the dosingpump in ml/min.
         """
         return self.read("actual_value_additive")
+
+    @property
+    def real_dosingspeed(self) -> float:
+        """
+        float: Real speed of the dosingpump in %.
+        """
+        return self.read("actual_value_dosingpump")
 
     @property
     def real_pressure(self) -> float:
@@ -87,3 +94,38 @@ class Dosingpump(OPCUAMachine):
         bool: True if the dosingpump is ready for operation.
         """
         return self.read("Ready_for_operation_dosingpump")
+    
+    @property
+    def emergency_stop(self) -> bool:
+        """
+        bool: True if emergency stop is ok, False otherwise.
+        """
+        return bool(self.safe_read("emergency_stop_ok", False))
+
+    @property
+    def on(self) -> bool:
+        """
+        bool: True if the machine is powered on, False otherwise.
+        """
+        return bool(self.safe_read("state_machine_on", False))
+    
+    @property
+    def remote(self) -> bool:
+        """
+        bool: True if remote is connected.
+        """
+        return self.read("Remote_connected_dosingpump")
+    
+    @property
+    def fc(self) -> bool:
+        """
+        bool: True if frequency converter is ok, False otherwise.
+        """
+        return not bool(self.safe_read("state_fc_error_dosingpump", True)) # Inverted
+    
+    @property
+    def operating_pressure(self) -> bool:
+        """
+        bool: True if operating pressure is ok, False otherwise.
+        """
+        return not bool(self.safe_read("state_pressure_error_dosingpump", True)) # Inverted

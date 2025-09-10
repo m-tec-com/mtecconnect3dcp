@@ -10,7 +10,7 @@ class Printhead(OPCUAMachine):
         """
         bool: True if the printhead is running, False otherwise.
         """
-        return self.read("state_printhead_on")
+        return self.read("state_fc_printhead")
     @running.setter
     def running(self, state: bool):
         """
@@ -71,3 +71,38 @@ class Printhead(OPCUAMachine):
         bool: True if the printhead is ready for operation.
         """
         return self.read("Ready_for_operation_printhead")
+    
+    @property
+    def emergency_stop(self) -> bool:
+        """
+        bool: True if emergency stop is ok, False otherwise.
+        """
+        return bool(self.safe_read("emergency_stop_ok", False))
+
+    @property
+    def on(self) -> bool:
+        """
+        bool: True if the machine is powered on, False otherwise.
+        """
+        return bool(self.safe_read("state_machine_on", False))
+    
+    @property
+    def remote(self) -> bool:
+        """
+        bool: True if remote is connected.
+        """
+        return self.read("Remote_connected_printhead")
+    
+    @property
+    def fc(self) -> bool:
+        """
+        bool: True if frequency converter is ok, False otherwise.
+        """
+        return not bool(self.safe_read("state_fc_error_printhead", True)) # Inverted
+    
+    @property
+    def operating_pressure(self) -> bool:
+        """
+        bool: True if operating pressure is ok, False otherwise.
+        """
+        return not bool(self.safe_read("state_pressure_error_printhead", True)) # Inverted

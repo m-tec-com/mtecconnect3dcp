@@ -64,6 +64,7 @@ pump.running = True  # Start the pump
 | Function/Property        | Type         | Description        | Unit      | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
 |--------------------------|--------------|--------------------|-----------|-----------------|--------------|---------------|----------|----------------------------|---------------------------|
 | real_speed               | float        | speed              |           |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
+| real_dosingspeed         | float        | speed of dosing pump | %       |  :x:   |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |
 | real_pressure            | float        | pressure           | bar       |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark: (optional)   |
 | real_water               | float        | water flow         | l/h       |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
 | real_water_temperature   | float        | water temperature  | °C        |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
@@ -89,14 +90,15 @@ pump.running = True  # Start the pump
 | pumping                  | bool         | pumping                        |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
 | pumping_net              | bool         | pumping via net                |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
 | pumping_fc               | bool         | pumping via FC                 |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| remote                   | bool         | hardware remote connected      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| remote                   | bool         | hardware remote connected      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
 | solenoidvalve            | bool         | solenoid valve open            |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
 | waterpump                | bool         | pumping waterpump running      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| emergency_stop           | bool         | emergency stop ok              |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| on                       | bool         | machine powered on             |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| emergency_stop           | bool         | emergency stop ok              |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
+| on                       | bool         | machine powered on             |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
 | safety                   | (bool, bool) | (mixingpump, mixer) safety ok  |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
 | circuitbreaker           | (bool, bool) | (fc, other) circuit breaker ok |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| fc                       | bool         | frequency converter ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| fc                       | bool         | frequency converter ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
+| operating_pressure       | bool         | pressure ok                    |  :x:   |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
 | water_pressure           | bool         | water pressure ok              |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
 | hopper_wet               | bool         | wet material hopper ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
 | hopper_dry               | bool         | dry material hopper ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
