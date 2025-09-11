@@ -20,11 +20,11 @@ dp.speed = 30 # ml/min
 
 dp.cleaning = True # start cleaning water
 time.sleep(1) # wait 1 second
-ph.running = True # start printhead motor
+ph.run = True # start printhead motor
 time.sleep(1) # wait 1 second
-mp.running = True # start mixingpump motor
+mp.run = True # start mixingpump motor
 time.sleep(10) # wait 10 seconds
-dp.running = True # start dosing
+dp.run = True # start dosing
 time.sleep(1) # wait 10 seconds
 dp.cleaning = False # stop cleaning water
 time.sleep(10) # wait 10 seconds
@@ -35,14 +35,14 @@ PRINTING PROCESS RUNNING
 
 dp.cleaning = True # start cleaning water
 time.sleep(1) # wait 1 second
-dp.running = False # stop dosing
-mp.running = False # stop mixingpump motor
+dp.run = False # stop dosing
+mp.run = False # stop mixingpump motor
 time.sleep(5) # wait 5 seconds
 for i in range(5):
-    ph.running = False # stop printhead motor
+    ph.run = False # stop printhead motor
     time.sleep(1) # wait 1 second
-    ph.running = True # start printhead motor
+    ph.run = True # start printhead motor
     time.sleep(4) # wait 4 seconds
-ph.running = False # stop printhead motor
+ph.run = False # stop printhead motor
 dp.cleaning = False # stop cleaning water
 

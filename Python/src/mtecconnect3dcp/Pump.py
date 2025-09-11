@@ -16,7 +16,7 @@ class Pump(ModbusMachine):
         self._last_reverse: bool = False
 
     @property
-    def ready(self) -> bool:
+    def s_ready(self) -> bool:
         """
         bool: True if the machine is ready for operation (on, remote, mixer and mixingpump on).
         """
@@ -24,14 +24,14 @@ class Pump(ModbusMachine):
         return ((switches % 32) - (switches % 16) != 0)
 
     @property
-    def running(self) -> bool:
+    def run(self) -> bool:
         """
-        bool: True if the pump is running, False otherwise.
+        bool: True if the pump is set to run, False otherwise.
         """
         return (self.read("FA00") & self._RUNNING_MASK) != 0
 
-    @running.setter
-    def running(self, state: bool):
+    @run.setter
+    def run(self, state: bool):
         """
         Set the running state of the pump.
 
@@ -50,6 +50,20 @@ class Pump(ModbusMachine):
             v = self.write("FA00", 0x0000)
             self.stop_keepalive()
             return v
+    
+    @property
+    def s_running(self) -> bool:
+        """
+        bool: True if the pump is running, False otherwise.
+        """
+        return self.m_speed > 0
+    
+    @property
+    def s_running_reverse(self) -> bool:
+        """
+        bool: True if the pump is running in reverse, False otherwise.
+        """
+        return self.m_speed < 0
 
     @property
     def reverse(self) -> bool:
@@ -93,21 +107,21 @@ class Pump(ModbusMachine):
         return self.write("FA01", int(value * 100))
 
     @property
-    def voltage(self) -> float:
+    def m_voltage(self) -> float:
         """
         float: Voltage of the pump in V.
         """
         return self.read("FD05") / 100
 
     @property
-    def current(self) -> float:
+    def m_current(self) -> float:
         """
         float: Current of the pump in A.
         """
         return self.read("FD03") / 100
 
     @property
-    def torque(self) -> float:
+    def m_torque(self) -> float:
         """
         float: Torque of the pump in Nm.
         """
@@ -120,7 +134,7 @@ class Pump(ModbusMachine):
         return self.write("FA00", 0x1000)
 
     @property
-    def real_speed(self) -> float:
+    def m_speed(self) -> float:
         """
         float: Real speed of the pump in Hz. Negative values indicate reverse direction.
         """
@@ -146,7 +160,7 @@ class Pump(ModbusMachine):
         if value == self._last_speed:
             return
         if value == 0:
-            self.running = False
+            self.run = False
         else:
             if value < 0 and not self._last_speed < 0:
                 self.reverse = True

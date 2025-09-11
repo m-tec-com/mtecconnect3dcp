@@ -6,13 +6,13 @@ class Mixingpump(OPCUAMachine):
     Inherits from OPCUAMachine.
     """
     @property
-    def running(self) -> bool:
+    def run(self) -> bool:
         """
         bool: True if the machine is running, False otherwise.
         """
         return bool(self.read("Remote_start"))
-    @running.setter
-    def running(self, state: bool):
+    @run.setter
+    def run(self, state: bool):
         """
         Set the running state of the machine.
 
@@ -46,7 +46,7 @@ class Mixingpump(OPCUAMachine):
         self.change("set_value_mixingpump", int(hz), "uint16")
 
     @property
-    def real_speed(self) -> float:
+    def m_speed(self) -> float:
         """
         float: Real speed of the mixingpump in Hz.
         """
@@ -54,70 +54,70 @@ class Mixingpump(OPCUAMachine):
         return speed * 50 / 65535 # 50Hz = 65535, 0Hz = 0
 
     @property
-    def error(self) -> bool:
+    def s_error(self) -> bool:
         """
         bool: True if the machine is in error state.
         """
         return self.read("error")
     
     @property
-    def error_no(self) -> int:
+    def s_error_no(self) -> int:
         """
         int: Error number of the machine (0 = none).
         """
         return self.read("error_no")
 
     @property
-    def ready(self) -> bool:
+    def s_ready(self) -> bool:
         """
         bool: True if the machine is ready for operation.
         """
         return self.read("Ready_for_operation")
 
     @property
-    def mixing(self) -> bool:
+    def s_mixing(self) -> bool:
         """
         bool: True if the mixer is running (automatic mode).
         """
         return self.read("aut_mixer")
 
     @property
-    def pumping(self) -> bool:
+    def s_pumping(self) -> bool:
         """
         bool: True if the mixingpump is running.
         """
-        return self.pumping_net or self.pumping_fc
+        return self.s_pumping_net or self.s_pumping_fc
 
     @property
-    def pumping_net(self) -> bool:
+    def s_pumping_net(self) -> bool:
         """
         bool: True if the mixingpump is running on power supply (automatic mode).
         """
         return self.read("aut_mixingpump_net")
 
     @property
-    def pumping_fc(self) -> bool:
+    def s_pumping_fc(self) -> bool:
         """
         bool: True if the mixingpump is running on frequency converter supply (automatic mode).
         """
         return self.read("aut_mixingpump_fc")
 
     @property
-    def solenoidvalve(self) -> bool:
+    def s_solenoidvalve(self) -> bool:
         """
         bool: True if the solenoid valve is open (automatic mode).
         """
         return self.read("aut_solenoid_valve")
     
     @property
-    def waterpump(self) -> bool:
+    def s_waterpump(self) -> bool:
         """
         bool: True if the water pump is running (automatic mode).
         """
         return self.read("aut_waterpump")
 
     @property
-    def remote(self) -> bool:
+    def s_remote(self) -> bool:
         """
         bool: True if remote is connected.
         """
@@ -197,30 +197,33 @@ class Mixingpump(OPCUAMachine):
 
     """Backward compatibility"""
     def start(self):
-        self.running = True
+        """
+        DEPRECATED: Use '.run = True' property instead.
+        """
+        self.run = True
     def stop(self):
-        self.running = False
+        self.run = False
     def setSpeed(self, speed):
         self.speed = speed * 30 / 100 + 20 # 100% = 50Hz, 0% = 20Hz
     def getSpeed(self):
-        return self.real_speed
+        return self.m_speed
     def isError(self):
-        return self.error
+        return self.s_error
     def getError(self):
-        return self.error_no
+        return self.s_error_no
     def isReadyForOperation(self):
         return self.ready
     def isMixerRunning(self):
-        return self.mixing
+        return self.s_mixing
     def isMixingpumpRunningNet(self):
-        return self.pumping_net
+        return self.s_pumping_net
     def isMixingpumpRunningFc(self):
-        return self.pumping_fc
+        return self.s_pumping_fc
     def isMixingpumpRunning(self):
-        return self.pumping
+        return self.s_pumping
     def isSolenoidValve(self):
-        return self.solenoidvalve
+        return self.s_solenoidvalve
     def isWaterpump(self):
-        return self.waterpump
+        return self.s_waterpump
     def isRemote(self):
-        return self.remote
+        return self.s_remote

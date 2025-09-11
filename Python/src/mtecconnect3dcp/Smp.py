@@ -9,28 +9,28 @@ class Smp(Mixingpump):
     """
     
     @property
-    def rotaryvalve(self) -> bool:
+    def s_rotaryvalve(self) -> bool:
         """
         bool: True if the rotary valve is running in automatic mode.
         """
         return self.safe_read("aut_cw", False)
     
     @property
-    def compressor(self) -> bool:
+    def s_compressor(self) -> bool:
         """
         bool: True if the compressor is running in automatic mode.
         """
         return self.safe_read("aut_comp", False)
     
     @property
-    def vibrator(self) -> tuple:
+    def s_vibrator(self) -> tuple:
         """
         tuple: (vibrator1, vibrator2) True if the vibrators are running in automatic mode.
         """
         return (self.safe_read("aut_vib_1", False), self.safe_read("aut_vib_2", False))
     
     @property
-    def silolevel(self) -> float:
+    def m_silolevel(self) -> float:
         """
         float: Silo level in percentage (0-100%).
         """
