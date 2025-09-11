@@ -390,16 +390,16 @@ class DuomixPlus (Mixingpump):
         self.easy_subscribe("state_fc_fwd", callback)
     
     @property
-    def s_running_reverse(self) -> bool:
+    def s_pumping_reverse(self) -> bool:
         """
-        bool: True if the mixingpump is running in reverse.
+        bool: True if the mixingpump is pumping in reverse.
         """
         return bool(self.safe_read("state_fc_rwd", False))
 
-    @s_running_reverse.setter
-    def s_running_reverse(self, callback: callable):
+    @s_pumping_reverse.setter
+    def s_pumping_reverse(self, callback: callable):
         """
-        Create a subscription for the reverse running state.
+        Create a subscription for the reverse pumping state.
 
         Args:
             callback (callable): Callback function (optional parameters: 'value' and 'parameter').

@@ -43,34 +43,34 @@ pump.run = True  # Start the pump
 
 | Function/Property         | Get | Set | Type         | Description                        | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
 |--------------------------|-----|-----|--------------|------------------------------------|------|---------|----------|-----|------------|-----------|
-| run                      |  :white_check_mark:  |  :white_check_mark:  | bool         | Start/stop machine                 |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| reverse                  |  :white_check_mark:  |  :white_check_mark:  | bool         | Set/Get running reverse   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |  :x:   |  :x:   |
-| emergcency_stop() |  :white_check_mark:  |  :x:  | function         | Execute Emergency Stop   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |  :x:   |  :x:   |
-| speed                    |  :white_check_mark:  |  :white_check_mark:  | float/int    | Set/Get speed                      |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| dosingpump               |  :white_check_mark:  |  :white_check_mark:  | bool         | Start/stop dosingpump              |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| dosingspeed              |  :white_check_mark:  |  :white_check_mark:  | float        | Set dosingpump speed               |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| water                    |  :white_check_mark:  |  :white_check_mark:  | float        | Set water flow (l/h)               |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| cleaning                 |  :white_check_mark:  |  :white_check_mark:  | bool         | Start/stop cleaning water          |  :x:   |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |
-| setDigital(pin, value)   |  :x:  |  :white_check_mark:  | function     | Set digital output                 |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| setAnalog(pin, value)    |  :x:  |  :white_check_mark:  | function     | Set analog output                  |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| run                      |  ✅  |  ✅  | bool         | Start/stop machine                 |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
+| reverse                  |  ✅  |  ✅  | bool         | Set/Get running reverse   |  ✅   |  ❌   |  ❌   |  ❌   |  ❌   |  ❌   |
+| emergcency_stop() |  ✅  |  ❌  | function         | Execute Emergency Stop   |  ✅   |  ❌   |  ❌   |  ❌   |  ❌   |  ❌   |
+| speed                    |  ✅  |  ✅  | float/int    | Set/Get speed                      |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
+| dosingpump               |  ✅  |  ✅  | bool         | Start/stop dosingpump              |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| dosingspeed              |  ✅  |  ✅  | float        | Set dosingpump speed               |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| water                    |  ✅  |  ✅  | float        | Set water flow (l/h)               |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| cleaning                 |  ✅  |  ✅  | bool         | Start/stop cleaning water          |  ❌   |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |
+| setDigital(pin, value)   |  ❌  |  ✅  | function     | Set digital output                 |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
+| setAnalog(pin, value)    |  ❌  |  ✅  | function     | Set analog output                  |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
 
 ### Measure (GET)
 
 | Function/Property        | Type         | Description        | Unit      | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
 |--------------------------|--------------|--------------------|-----------|-----------------|--------------|---------------|----------|----------------------------|---------------------------|
-| m_speed               | float        | speed              |           |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| m_dosingspeed         | float        | speed of dosing pump | %       |  :x:   |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |
-| m_pressure            | float        | pressure           | bar       |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark: (optional)   |
-| m_water               | float        | water flow         | l/h       |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| m_water_temperature   | float        | water temperature  | °C        |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| m_temperature         | float        | mortar temperature | °C        |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| m_valve               | float        | valve position     | %         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| m_silolevel           | float        | Silo level         | %         |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| m_voltage             | bool         | Voltage            |           |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |  :x:   |  :x:   |
-| m_current             | bool         | Current            |           |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |  :x:   |  :x:   |
-| m_torque              | bool         | Torque             |           |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |  :x:   |  :x:   |
-| getDigital(pin)       | function     | Digital input      | bool      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| getAnalog(pin)        | function     | Analog input       | 0 - 65535 |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| m_speed               | float        | speed              |           |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
+| m_dosingspeed         | float        | speed of pump | %       |  ❌   |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |
+| m_pressure            | float        | pressure           | bar       |  ❌   |  ❌   |  ✅   |  ❌   |  ✅   |  ✅ (optional)   |
+| m_water               | float        | water flow         | l/h       |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| m_water_temperature   | float        | water temperature  | °C        |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| m_temperature         | float        | mortar temperature | °C        |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| m_valve               | float        | valve position     | %         |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| m_silolevel           | float        | Silo level         | %         |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |
+| m_voltage             | bool         | Voltage            |           |  ✅   |  ❌   |  ❌   |  ❌   |  ❌   |  ❌   |
+| m_current             | bool         | Current            |           |  ✅   |  ❌   |  ❌   |  ❌   |  ❌   |  ❌   |
+| m_torque              | bool         | Torque             |           |  ✅   |  ❌   |  ❌   |  ❌   |  ❌   |  ❌   |
+| getDigital(pin)       | function     | Digital input      | bool      |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
+| getAnalog(pin)        | function     | Analog input       | 0 - 65535 |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
 
 
 
@@ -78,41 +78,41 @@ pump.run = True  # Start the pump
 
 | Function/Property        | Type         | Description                        | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
 |--------------------------|--------------|------------------------------------|------|---------|----------|-----|------------|-----------|
-| s_error                    | bool | error state                    |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_error_no                 | int  | error number                   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_ready                    | bool | Ready for operation            |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_mixing                   | bool | mixing                         |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_pumping                  | bool | pumping                        |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_pumping_net              | bool | pumping via net                |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_pumping_fc               | bool | pumping via FC                 |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_remote                   | bool | hardware remote connected      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_solenoidvalve            | bool | solenoid valve open            |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_waterpump                | bool | pumping waterpump running      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_emergency_stop           | bool | emergency stop ok              |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_on                       | bool | machine powered on             |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_safety_mp                | bool | mixingpump safety ok           |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_safety_mixer             | bool | mixer safety ok                |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_circuitbreaker_fc        | bool | Frequency Converter circuit breaker ok |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_circuitbreaker           | bool | other circuit breaker ok       |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_fc                       | bool | frequency converter ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_operating_pressure       | bool | pressure ok                    |  :x:   |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_water_pressure           | bool | water pressure ok              |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_hopper_wet               | bool | wet material hopper ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_hopper_dry               | bool | dry material hopper ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_running_local            | bool | running in local mode          |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_phase_reversed           | bool | phase reversed                 |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_running                  | bool | Mixingpump running forward     |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_running_reverse          | bool | Mixingpump running reverse     |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_rotaryvalve              | bool | rotary valve running           |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_compressor               | bool | compressor running             |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_vibrator_1               | bool | vibrator 1 running             |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_vibrator_2               | bool | vibrator 2 running             |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
+| s_error                    | bool | error state                    |  ❌   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
+| s_error_no                 | int  | error number                   |  ❌   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
+| s_ready                    | bool | Ready for operation            |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
+| s_mixing                   | bool | mixing                         |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
+| s_pumping                  | bool | pumping                        |  ✅   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
+| s_pumping_reverse          | bool | pumping reverse                |  ✅   |  ❌   |  ❔   |  ❌   |  ❌   |  ❌   |
+| s_pumping_net              | bool | pumping via net                |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
+| s_pumping_fc               | bool | pumping via FC                 |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
+| s_remote                   | bool | hardware remote connected      |  ❌   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
+| s_solenoidvalve            | bool | solenoid valve open            |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
+| s_waterpump                | bool | pumping waterpump running      |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
+| s_emergency_stop           | bool | emergency stop ok              |  ❌   |  ❌   |  ✅   |  ❌   |  ✅   |  ✅   |
+| s_on                       | bool | machine powered on             |  ❌   |  ❌   |  ✅   |  ❌   |  ✅   |  ✅   |
+| s_safety_mp                | bool | mixingpump safety ok           |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| s_safety_mixer             | bool | mixer safety ok                |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| s_circuitbreaker_fc        | bool | Frequency Converter circuit breaker ok |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| s_circuitbreaker           | bool | other circuit breaker ok       |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| s_fc                       | bool | frequency converter ok         |  ❌   |  ❌   |  ✅   |  ❌   |  ✅   |  ✅   |
+| s_operating_pressure       | bool | pressure ok                    |  ❌   |  ❌   |  ❌   |  ❌   |  ✅   |  ✅   |
+| s_water_pressure           | bool | water pressure ok              |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| s_hopper_wet               | bool | wet material hopper ok         |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| s_hopper_dry               | bool | dry material hopper ok         |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| s_running                  | bool | Machine running                |  ❌   |  ❌   |  ❌   |  ❌   |  ✅   |  ✅   |
+| s_running_local            | bool | running in local mode          |  ❌   |  ❌   |  ❔   |  ❌   |  ❌   |  ❌   |
+| s_phase_reversed           | bool | phase reversed                 |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
+| s_rotaryvalve              | bool | rotary valve running           |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |
+| s_compressor               | bool | compressor running             |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |
+| s_vibrator_1               | bool | vibrator 1 running             |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |
+| s_vibrator_2               | bool | vibrator 2 running             |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |
 
 ### Subscriptions
 
 | Description                        | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
 |------------------------------------|------|---------|----------|-----|------------|-----------|
-| Subscribe to variable changes      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| Subscribe to variable changes      |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
 
 You can subscribe to OPC UA variables for real-time updates:
 

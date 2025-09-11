@@ -76,14 +76,14 @@ class Dosingpump(OPCUAMachine):
         self.easy_subscribe("actual_value_additive", callback)
 
     @property
-    def m_dosingspeed(self) -> float:
+    def m_pumpspeed(self) -> float:
         """
         float: Real speed of the dosingpump in %.
         """
         return self.read("actual_value_dosingpump")
 
-    @m_dosingspeed.setter
-    def m_dosingspeed(self, callback: callable):
+    @m_pumpspeed.setter
+    def m_pumpspeed(self, callback: callable):
         """
         Create a subscription for the real speed of the dosingpump in %.
 

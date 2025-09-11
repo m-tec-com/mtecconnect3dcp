@@ -38,6 +38,9 @@ class Mixingpump(OPCUAMachine):
         Raises:
             ValueError: If speed is out of range.
         """
+        if callable(speed):
+            self.easy_subscribe("set_value_mixingpump", speed)
+            return
         if speed < 20:
             raise ValueError("Speed in Hz cannot be below 20")
         if speed > 50:
