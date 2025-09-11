@@ -3,6 +3,20 @@ from asyncua import ua #https://github.com/FreeOpcUa/asyncua
 
 from typing import Optional, Callable, Any
 
+
+def property_only(cls):
+    """Class decorator to allow only attributes that are defined as properties."""
+    orig_setattr = cls.__setattr__
+
+    def __setattr__(self, name, value):
+        # Allow if it's a property or an internal attribute (starts with '_')
+        if name in cls.__dict__ and isinstance(cls.__dict__[name], property) or name.startswith('_'):
+            orig_setattr(self, name, value)
+        else:
+            raise AttributeError(f"Cannot set attribute '{name}'")
+    cls.__setattr__ = __setattr__
+    return cls
+@property_only
 class OPCUAMachine:
     """
     Base class for OPC-UA machine communication.
