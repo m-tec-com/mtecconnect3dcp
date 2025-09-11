@@ -5,15 +5,15 @@ import time
 from mtecconnect3dcp import Printhead, Dosingpump, Pump, Duomix, DuomixPlus, Smp
 
 mp = DuomixPlus()
-mp.connect("opc.tcp://10.129.4.73:4840") # duo-mix 3DCP+
+mp.connect("10.129.4.73") # duo-mix 3DCP+
 mp.speed = 50 # Hz (20-50Hz)
 
 ph = Printhead()
-ph.connect("opc.tcp://10.129.4.74:4840") # flow-matic PX control
+ph.connect("10.129.4.74") # flow-matic PX control
 ph.speed = 1000 # 1/min
 
 dp = Dosingpump()
-dp.connect("opc.tcp://10.129.4.74:4840") # flow-matic PX control
+dp.connect("10.129.4.74") # flow-matic PX control
 dp.speed = 30 # ml/min
 
 

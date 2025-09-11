@@ -19,28 +19,16 @@ pip install mtecconnect3dcp
 
 
 ### Example
-See `/Python/example.py` for a full example. Below is a minimal usage guide:
+See `/Python/example.py` for an example of a print process. Below is a minimal usage guide:
 
 ```python
 from mtecconnect3dcp import Printhead, Dosingpump, Pump, Duomix, DuomixPlus, Smp
 
-# Connect to a Mixingpump
+# Connect to a m-tec connect duo-mix 3DCP
 mp = Duomix()
-mp.connect("opc.tcp://<MIXINGPUMP_IP>:4840")
+mp.connect("10.129.4.73") # 10.129.4.73 is the default ip
 mp.speed = 50  # Set speed to 50Hz (20-50Hz range)
 mp.run = True  # Start the mixingpump
-
-# Connect to a Printhead
-ph = Printhead()
-ph.connect("opc.tcp://<FLOW-MATIC_IP>:4840")
-ph.speed = 1000  # Set speed to 1000 1/min
-ph.run = True  # Start the printhead
-
-# Connect to a Dosingpump
-dp = Dosingpump()
-dp.connect("opc.tcp://<FLOW-MATIC_IP>:4840")
-dp.speed = 30  # Set speed to 30 ml/min
-dp.run = True  # Start the dosingpump
 
 # Connect to a Pump (P20/P50 via Modbus)
 pump = Pump()
