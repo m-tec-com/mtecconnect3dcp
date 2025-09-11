@@ -173,18 +173,18 @@ class Pump(ModbusMachine):
     """Backward compatibility"""
     def start(self):
         """
-        Starts the pump. (Legacy API)
+        DEPRECATED: Use '.run = True' instead.
         """
-        return self.write("FA00", 0xC400)
-
+        self.reverse = False
+        self.run = True
     def start_reverse(self):
         """
-        Starts the pump in reverse. (Legacy API)
+        DEPRECATED: Use '.reverse = True' and '.run = True' instead.
         """
-        return self.write("FA00", 0xC600)
-
+        self.reverse = True
+        self.run = True
     def stop(self):
         """
-        Stops the pump. (Legacy API)
+        DEPRECATED: Use '.run = False' instead.
         """
-        return self.write("FA00", 0x0000)
+        self.run = False

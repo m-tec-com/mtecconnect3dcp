@@ -198,32 +198,71 @@ class Mixingpump(OPCUAMachine):
     """Backward compatibility"""
     def start(self):
         """
-        DEPRECATED: Use '.run = True' property instead.
+        DEPRECATED: Use '.run = True' instead.
         """
         self.run = True
     def stop(self):
+        """
+        DEPRECATED: Use '.run = False' instead.
+        """
         self.run = False
     def setSpeed(self, speed):
+        """
+        DEPRECATED: Use '.speed = speed' (20-50Hz instead of 0-100%) instead.
+        """
         self.speed = speed * 30 / 100 + 20 # 100% = 50Hz, 0% = 20Hz
     def getSpeed(self):
+        """
+        DEPRECATED: Use '.speed' (20-50Hz instead of 0-100%) instead.
+        """
         return self.m_speed
     def isError(self):
+        """
+        DEPRECATED: Use '.error' instead.
+        """
         return self.s_error
     def getError(self):
+        """
+        DEPRECATED: Use '.error_no' instead.
+        """
         return self.s_error_no
     def isReadyForOperation(self):
+        """
+        DEPRECATED: Use '.ready' instead.
+        """
         return self.ready
     def isMixerRunning(self):
+        """
+        DEPRECATED: Use '.s_mixing' instead.
+        """
         return self.s_mixing
     def isMixingpumpRunningNet(self):
+        """
+        DEPRECATED: Use '.s_pumping_net' instead.
+        """
         return self.s_pumping_net
     def isMixingpumpRunningFc(self):
+        """
+        DEPRECATED: Use '.s_pumping_fc' instead.
+        """
         return self.s_pumping_fc
     def isMixingpumpRunning(self):
+        """
+        DEPRECATED: Use '.s_pumping' instead.
+        """
         return self.s_pumping
     def isSolenoidValve(self):
+        """
+        DEPRECATED: Use '.s_solenoidvalve' instead.
+        """
         return self.s_solenoidvalve
     def isWaterpump(self):
+        """
+        DEPRECATED: Use '.s_waterpump' instead.
+        """
         return self.s_waterpump
     def isRemote(self):
+        """
+        DEPRECATED: Use '.s_remote' instead.
+        """
         return self.s_remote
