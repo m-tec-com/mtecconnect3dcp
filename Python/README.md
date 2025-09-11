@@ -2,6 +2,12 @@
 
 This library provides a simple interface to connect and control m-tec machines via OPC UA and Modbus. It supports different machine types such as Mixingpump (duo-mix 3DCP (+), SMP 3DCP), Printhead (flow-matic PX), Dosingpump (flow-matic) via OPC-UA, and Pumps (P20, P50) via Modbus.
 
+## Entwicklerfreundlichkeit & IDE-Unterstützung
+
+Diese Bibliothek verwendet ausführliche Python-Docstrings und Typannotationen. Dadurch werden in modernen IDEs wie Visual Studio Code automatische Tooltips, Autovervollständigung und Inline-Hilfen (IntelliSense) unterstützt. So erhalten Sie direkt beim Programmieren Hinweise zu Parametern, Rückgabewerten und Nutzung der Funktionen und Klassen.
+
+**Hinweis:** Für das beste Erlebnis empfiehlt sich die Nutzung von VS Code oder einer anderen IDE mit Python-IntelliSense-Unterstützung.
+
 ## Installation
 
 
@@ -84,48 +90,48 @@ pump.run = True  # Start the pump
 
 | Function/Property        | Type         | Description                        | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
 |--------------------------|--------------|------------------------------------|------|---------|----------|-----|------------|-----------|
-| s_error                    | bool         | error state                    |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_error_no                 | int          | error number                   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_ready                    | bool         | Ready for operation            |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_mixing                   | bool         | mixing                         |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_pumping                  | bool         | pumping                        |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_pumping_net              | bool         | pumping via net                |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_pumping_fc               | bool         | pumping via FC                 |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_remote                   | bool         | hardware remote connected      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_solenoidvalve            | bool         | solenoid valve open            |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_waterpump                | bool         | pumping waterpump running      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_emergency_stop           | bool         | emergency stop ok              |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_on                       | bool         | machine powered on             |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_safety                   | (bool, bool) | (mixingpump, mixer) safety ok  |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_circuitbreaker           | (bool, bool) | (fc, other) circuit breaker ok |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_fc                       | bool         | frequency converter ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_operating_pressure       | bool         | pressure ok                    |  :x:   |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_water_pressure           | bool         | water pressure ok              |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_hopper_wet               | bool         | wet material hopper ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_hopper_dry               | bool         | dry material hopper ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_running_local            | bool         | running in local mode          |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_phase_reversed           | bool         | phase reversed                 |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_running                  | bool         | Mixingpump running forward     |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
-| s_running_reverse          | bool         | Mixingpump running reverse     |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
-| s_rotaryvalve              | bool         | rotary valve running           |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_compressor               | bool         | compressor running             |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
-| s_vibrator                 | (bool, bool) | vibrator running (vib1, vib2)  |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
+| s_error                    | bool | error state                    |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
+| s_error_no                 | int  | error number                   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
+| s_ready                    | bool | Ready for operation            |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
+| s_mixing                   | bool | mixing                         |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| s_pumping                  | bool | pumping                        |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| s_pumping_net              | bool | pumping via net                |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| s_pumping_fc               | bool | pumping via FC                 |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| s_remote                   | bool | hardware remote connected      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |
+| s_solenoidvalve            | bool | solenoid valve open            |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| s_waterpump                | bool | pumping waterpump running      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| s_emergency_stop           | bool | emergency stop ok              |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
+| s_on                       | bool | machine powered on             |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
+| s_safety_mp                | bool | mixingpump safety ok           |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| s_safety_mixer             | bool | mixer safety ok                |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| s_circuitbreaker_fc        | bool | Frequency Converter circuit breaker ok |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| s_circuitbreaker           | bool | other circuit breaker ok       |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| s_fc                       | bool | frequency converter ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
+| s_operating_pressure       | bool | pressure ok                    |  :x:   |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
+| s_water_pressure           | bool | water pressure ok              |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| s_hopper_wet               | bool | wet material hopper ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| s_hopper_dry               | bool | dry material hopper ok         |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| s_running_local            | bool | running in local mode          |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| s_phase_reversed           | bool | phase reversed                 |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| s_running                  | bool | Mixingpump running forward     |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :white_check_mark:   |
+| s_running_reverse          | bool | Mixingpump running reverse     |  :white_check_mark:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |  :x:   |
+| s_rotaryvalve              | bool | rotary valve running           |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
+| s_compressor               | bool | compressor running             |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
+| s_vibrator_1               | bool | vibrator 1 running             |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
+| s_vibrator_2               | bool | vibrator 2 running             |  :x:   |  :x:   |  :x:   |  :white_check_mark:   |  :x:   |  :x:   |
 
 ### Subscriptions
 
-| Function/Property        | Type         | Description                        | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
-|--------------------------|--------------|------------------------------------|------|---------|----------|-----|------------|-----------|
-| subscribe(var, cb, ms)   | function     | Subscribe to variable changes      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
+| Description                        | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
+|------------------------------------|------|---------|----------|-----|------------|-----------|
+| Subscribe to variable changes      |  :x:   |  :white_check_mark:   |  :white_check_mark:   |  :white_check_mark:   |  :x:   |  :x:   |
 
 You can subscribe to OPC UA variables for real-time updates:
 
 ```python
-def callback(value, parameter):
+def callback(value, parameter): # value and parameter (origial OPC-UA variable name) are optional
     print(f"{parameter} changed to {value}")
-
-mp.subscribe("Livebit2extern", callback, 500)  # Check every 500 ms
+mp = Duomix()
+mp.s_ready = callback # set a variable to you callback to subscribe
 ```
-
-Check the OPC-UA description provided by m-tec for all information about all variables and their names.
-
 ---

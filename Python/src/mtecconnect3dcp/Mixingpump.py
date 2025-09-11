@@ -1,4 +1,4 @@
-from .OPCUAMachine import OPCUAMachine
+from .OPCUAMachine import OPCUAMachine, SubscriptionWrapper
 
 class Mixingpump(OPCUAMachine):
     """
@@ -43,7 +43,7 @@ class Mixingpump(OPCUAMachine):
         if speed > 50:
             raise ValueError("Speed in Hz cannot be above 50")
         hz = (speed-20) * 65535 / 30 # 50Hz = 65535, 20Hz = 0
-        self.change("set_value_mixingpump", int(hz), "uint16")
+        self.change("set_value_mixingpump", hz, "uint16")
 
     @property
     def m_speed(self) -> float:
@@ -53,12 +53,39 @@ class Mixingpump(OPCUAMachine):
         speed = self.read("actual_value_mixingpump")
         return speed * 50 / 65535 # 50Hz = 65535, 0Hz = 0
 
+    @m_speed.setter
+    def m_speed(self, callback: callable):
+        """
+        Create a subscription for the real speed of the mixingpump in Hz.
+
+        Args:
+            callback (callable): Callback function.
+        """
+        if not callable(callback):
+            raise ValueError("Callback is not callable.")
+        def cb(value, parameter):
+            sw = SubscriptionWrapper(callback)
+            sw.trigger(value=value * 50 /65535, parameter=parameter)
+        self.easy_subscribe("actual_value_mixingpump", cb)
+
     @property
     def s_error(self) -> bool:
         """
         bool: True if the machine is in error state.
         """
         return self.read("error")
+
+    @s_error.setter
+    def s_error(self, callback: callable):
+        """
+        Create a subscription for the error state of the machine.
+
+        Args:
+            callback (callable): Callback function.
+        """
+        if not callable(callback):
+            raise ValueError("Callback is not callable.")
+        self.easy_subscribe("error", callback)
     
     @property
     def s_error_no(self) -> int:
@@ -67,12 +94,36 @@ class Mixingpump(OPCUAMachine):
         """
         return self.read("error_no")
 
+    @s_error_no.setter
+    def s_error_no(self, callback: callable):
+        """
+        Create a subscription for the error number of the machine.
+
+        Args:
+            callback (callable): Callback function.
+        """
+        if not callable(callback):
+            raise ValueError("Callback is not callable.")
+        self.easy_subscribe("error_no", callback)
+
     @property
     def s_ready(self) -> bool:
         """
         bool: True if the machine is ready for operation.
         """
         return self.read("Ready_for_operation")
+
+    @s_ready.setter
+    def s_ready(self, callback: callable):
+        """
+        Create a subscription for the ready state of the machine.
+
+        Args:
+            callback (callable): Callback function.
+        """
+        if not callable(callback):
+            raise ValueError("Callback is not callable.")
+        self.easy_subscribe("Ready_for_operation", callback)
 
     @property
     def s_mixing(self) -> bool:
@@ -81,12 +132,45 @@ class Mixingpump(OPCUAMachine):
         """
         return self.read("aut_mixer")
 
+    @s_mixing.setter
+    def s_mixing(self, callback: callable):
+        """
+        Create a subscription for the mixer running state (automatic mode).
+
+        Args:
+            callback (callable): Callback function.
+        """
+        if not callable(callback):
+            raise ValueError("Callback is not callable.")
+        self.easy_subscribe("aut_mixer", callback)
+
     @property
     def s_pumping(self) -> bool:
         """
         bool: True if the mixingpump is running.
         """
         return self.s_pumping_net or self.s_pumping_fc
+
+    @s_pumping.setter
+    def s_pumping(self, callback: callable):
+        """
+        Create a subscription for the mixingpump running state (net).
+
+        Args:
+            callback (callable): Callback function.
+        """
+        if not callable(callback):
+            raise ValueError("Callback is not callable.")
+        def cb(value, parameter):
+            sw = SubscriptionWrapper(callback)
+            if value:
+                sw.trigger(value=value, parameter=parameter)
+            else:
+                if parameter == "aut_mixingpump_net":
+                    sw.trigger(value=self.s_pumping_fc, parameter=parameter)
+                elif parameter == "aut_mixingpump_fc":
+                    sw.trigger(value=self.s_pumping_net, parameter=parameter)
+        self.easy_subscribe(["aut_mixingpump_net", "aut_mixingpump_fc"], cb)
 
     @property
     def s_pumping_net(self) -> bool:
@@ -95,6 +179,18 @@ class Mixingpump(OPCUAMachine):
         """
         return self.read("aut_mixingpump_net")
 
+    @s_pumping_net.setter
+    def s_pumping_net(self, callback: callable):
+        """
+        Create a subscription for the mixingpump running state (net).
+
+        Args:
+            callback (callable): Callback function.
+        """
+        if not callable(callback):
+            raise ValueError("Callback is not callable.")
+        self.easy_subscribe("aut_mixingpump_net", callback)
+
     @property
     def s_pumping_fc(self) -> bool:
         """
@@ -102,12 +198,36 @@ class Mixingpump(OPCUAMachine):
         """
         return self.read("aut_mixingpump_fc")
 
+    @s_pumping_fc.setter
+    def s_pumping_fc(self, callback: callable):
+        """
+        Create a subscription for the mixingpump running state (fc).
+
+        Args:
+            callback (callable): Callback function.
+        """
+        if not callable(callback):
+            raise ValueError("Callback is not callable.")
+        self.easy_subscribe("aut_mixingpump_fc", callback)
+
     @property
     def s_solenoidvalve(self) -> bool:
         """
         bool: True if the solenoid valve is open (automatic mode).
         """
         return self.read("aut_solenoid_valve")
+
+    @s_solenoidvalve.setter
+    def s_solenoidvalve(self, callback: callable):
+        """
+        Create a subscription for the solenoid valve state (automatic mode).
+
+        Args:
+            callback (callable): Callback function.
+        """
+        if not callable(callback):
+            raise ValueError("Callback is not callable.")
+        self.easy_subscribe("aut_solenoid_valve", callback)
     
     @property
     def s_waterpump(self) -> bool:
@@ -116,12 +236,36 @@ class Mixingpump(OPCUAMachine):
         """
         return self.read("aut_waterpump")
 
+    @s_waterpump.setter
+    def s_waterpump(self, callback: callable):
+        """
+        Create a subscription for the water pump state (automatic mode).
+
+        Args:
+            callback (callable): Callback function.
+        """
+        if not callable(callback):
+            raise ValueError("Callback is not callable.")
+        self.easy_subscribe("aut_waterpump", callback)
+
     @property
     def s_remote(self) -> bool:
         """
         bool: True if remote is connected.
         """
         return self.read("Remote_connected")
+
+    @s_remote.setter
+    def s_remote(self, callback: callable):
+        """
+        Create a subscription for the remote connection state.
+
+        Args:
+            callback (callable): Callback function.
+        """
+        if not callable(callback):
+            raise ValueError("Callback is not callable.")
+        self.easy_subscribe("Remote_connected", callback)
 
 
 
