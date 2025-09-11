@@ -1,0 +1,48 @@
+name: Publish Python distribution to PyPI on Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    environment:
+      name: pypi
+      url: https://pypi.org/p/mtecconnect3dcp/
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+        working-directory: Python
+
+      - name: Update version from tag
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/}
+          echo "Tag version: $TAG_VERSION"
+          # Update version in setup.py (assumes single version=... line)
+          sed -i "s/version=['\"]\(.*\)['\"]/version='$TAG_VERSION'/" setup.py
+          # Optionally update pyproject.toml if version is there
+          sed -i "s/^version = .*/version = '$TAG_VERSION'/" pyproject.toml || true
+        working-directory: Python
+
+      - name: Build package
+        run: python -m build
+        working-directory: Python
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: Python/dist

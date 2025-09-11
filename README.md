@@ -1,24 +1,32 @@
-# m-tecConnectOPC-UA
+
+# mtecconnect3dcp
+
+This repository contains tools and libraries for connecting to m-tec machines using OPC UA.
+
+For the Python client library, see the [Python package README](Python/README.md).
 
 ## Supported Machines
 
-The duo-mix connect and SMP connect use OPC UA as communication protocol. ([The P20 connect and P50 connect use Modbus RTU instead.](https://github.com/m-tec-com/m-tecConnectModbus))
+The duo-mix 3DCP(+), SMP 3DCP and flow-matic PX use OPC UA as communication protocol. The P20 connect and P50 3DCP pumps now also have support via Modbus RTU in this repository.
+
+**New:** Support for m-tec connect P20 and P50 pumps via Modbus (see [Python/README.md](Python/README.md) for usage).
+
+([Legacy Modbus support and tools are also available in the [m-tecConnectModbus](https://github.com/m-tec-com/m-tecConnectModbus) repository.)
 
 ## Connection
+
+### OPC-UA
 
 Connect the machine with the control unit (or your PC) with an ethernet cable.
 
 You might have to change the IP-Range of your control unit (or PC).
 
-The IP-Adress of the OPC UA server in the duo-mix connect and SMP connect is `10.129.4.73`.
+The default IP-Adress of the OPC UA server in the m-tec connect duo-mix 3DCP, 3DCP+, SMP 3DCP, and flow-matic control unit is `10.129.4.73`.
 
-## Communication
+To use the `mtecconnect3dcp` library provided in this repository, install the package and refer to [Python/Readme.md](Python/Readme.md) for usage patterns.
 
-To get started you can use [uaExpert from Unified Automation](https://www.unified-automation.com/products/development-tools/uaexpert.html).
+Alternatively, you can interface with OPC UA directly without using the provided library. See the examples in the [Python/opcua_examples_without_library](Python/OPCUA_examples_without_library) folder for more details.
 
-When controlling the machine externally you have to send a toggle-bit.
-Simply subscribe to `Livebit2extern` and actively update `Livebit2DuoMix` at the duo-mix connect. Check out the [example](examples/05_livebit.py)
+### Modbus
 
-> :warning:
->
-> Use `Livebit2machine` instead of `Livebit2DuoMix` at the SMP connect.
+Connect the machine with the control unit (or your PC) with an RS485 converter.
