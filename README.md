@@ -23,6 +23,10 @@ You might have to change the IP-Range of your control unit (or PC).
 
 The default IP-Adress of the OPC UA server in the m-tec connect duo-mix 3DCP, 3DCP+, SMP 3DCP, and flow-matic control unit is `10.129.4.73`.
 
+To use the `mtecconnect3dcp` library provided in this repository, install the package and refer to [Python/Readme.md](Python/Readme.md) for usage patterns.
+
+Alternatively, you can interface with OPC UA directly without using the provided library. See the examples in the [Python/opcua_examples_without_library](Python/OPCUA_examples_without_library) folder for more details.
+
 ### Modbus
 
 Connect the machine with the control unit (or your PC) with an RS485 converter.
