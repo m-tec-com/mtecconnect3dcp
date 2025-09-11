@@ -2,11 +2,11 @@
 
 This library provides a simple interface to connect and control m-tec machines via OPC UA and Modbus. It supports different machine types such as Mixingpump (duo-mix 3DCP (+), SMP 3DCP), Printhead (flow-matic PX), Dosingpump (flow-matic) via OPC-UA, and Pumps (P20, P50) via Modbus.
 
-## Entwicklerfreundlichkeit & IDE-Unterstützung
+## Developer Friendliness & IDE Support
 
-Diese Bibliothek verwendet ausführliche Python-Docstrings und Typannotationen. Dadurch werden in modernen IDEs wie Visual Studio Code automatische Tooltips, Autovervollständigung und Inline-Hilfen (IntelliSense) unterstützt. So erhalten Sie direkt beim Programmieren Hinweise zu Parametern, Rückgabewerten und Nutzung der Funktionen und Klassen.
+This library uses comprehensive Python docstrings and type annotations. As a result, modern IDEs such as Visual Studio Code provide automatic tooltips, autocompletion, and inline help (IntelliSense). This gives you immediate guidance on parameters, return values, and usage of functions and classes while coding.
 
-**Hinweis:** Für das beste Erlebnis empfiehlt sich die Nutzung von VS Code oder einer anderen IDE mit Python-IntelliSense-Unterstützung.
+**Note:** For the best experience, it is recommended to use VS Code or another IDE with Python IntelliSense support.
 
 ## Installation
 
