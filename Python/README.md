@@ -102,7 +102,7 @@ pump.run = True  # Start the pump
 | s_hopper_wet               | bool | wet material hopper ok         |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
 | s_hopper_dry               | bool | dry material hopper ok         |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
 | s_running                  | bool | Machine running                |  ❌   |  ❌   |  ❌   |  ❌   |  ✅   |  ✅   |
-| s_airpressure              | bool | airpressure ready              |  ❌   |  ❌   |  ❔   |  ❌   |  ❌   |  ❌   |
+| s_airpressure              | bool | airpressure ready              |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
 | s_phase_reversed           | bool | phase reversed                 |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
 | s_rotaryvalve              | bool | rotary valve running           |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |
 | s_compressor               | bool | compressor running             |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |
