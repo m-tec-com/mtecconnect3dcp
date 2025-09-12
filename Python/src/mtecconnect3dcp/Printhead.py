@@ -35,7 +35,7 @@ class Printhead(OPCUAMachine):
         Create a subscription for the running state of the printhead.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -70,7 +70,7 @@ class Printhead(OPCUAMachine):
         Create a subscription for the real speed of the printhead in 1/min.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -89,7 +89,7 @@ class Printhead(OPCUAMachine):
         Create a subscription for the real pressure of the printhead in bar.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -108,7 +108,7 @@ class Printhead(OPCUAMachine):
         Create a subscription for the error state of the printhead.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -127,7 +127,7 @@ class Printhead(OPCUAMachine):
         Create a subscription for the error number of the printhead.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -146,7 +146,7 @@ class Printhead(OPCUAMachine):
         Create a subscription for the ready state of the printhead.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -165,7 +165,7 @@ class Printhead(OPCUAMachine):
         Create a subscription for the emergency stop state.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -184,7 +184,7 @@ class Printhead(OPCUAMachine):
         Create a subscription for the machine power state.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -203,7 +203,7 @@ class Printhead(OPCUAMachine):
         Create a subscription for the remote connection state.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -222,7 +222,7 @@ class Printhead(OPCUAMachine):
         Create a subscription for the frequency converter state.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -244,7 +244,7 @@ class Printhead(OPCUAMachine):
         Create a subscription for the operating pressure state.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")

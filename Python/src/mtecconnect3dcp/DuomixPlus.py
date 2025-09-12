@@ -69,7 +69,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the real amount of water in l/h.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -88,7 +88,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the real temperature of the water in °C.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -107,7 +107,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the real temperature of the mortar in °C.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -126,7 +126,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the real pressure of the mortar in bar.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -145,7 +145,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the emergency stop state.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -164,7 +164,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the machine power state.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -183,7 +183,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the safety (mixingpump).
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -202,7 +202,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the safety (mixer).
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -229,7 +229,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the circuit breaker state.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -241,7 +241,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the frequency converter circuit breaker state.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -260,7 +260,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the frequency converter state.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -282,7 +282,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the water pressure state.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -301,7 +301,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the wet hopper level state.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -320,7 +320,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the dry hopper level state.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -330,26 +330,23 @@ class DuomixPlus (Mixingpump):
         subscription = self.easy_subscribe("state_drymaterialprobe", cb, False)
     
     @property
-    def s_running_local(self) -> bool:
+    def s_airpressure(self) -> bool:
         """
-        bool: True if the machine is running in local mode
+        bool: True if air pressure is ok, False otherwise.
         """
-        return not bool(self.safe_read("state_remote_start_local", True))
+        return bool(self.safe_read("state_remote_start_local", True))
 
-    @s_running_local.setter
-    def s_running_local(self, callback: callable):
+    @s_airpressure.setter
+    def s_airpressure(self, callback: callable):
         """
-        Create a subscription for the local running state.
+        Create a subscription for airpressure state.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
-        def cb(value, parameter):
-            sw = SubscriptionWrapper(callback, subscription)
-            sw.trigger(value=not value, parameter=parameter)
-        subscription = self.easy_subscribe("state_remote_start_local", cb, False)
+        self.easy_subscribe("state_remote_start_local", callback)
     
     @property
     def s_phase_reversed(self) -> bool:
@@ -364,7 +361,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the phase reversed state.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -383,7 +380,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the forward pumping state.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -402,7 +399,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the reverse pumping state.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -421,7 +418,7 @@ class DuomixPlus (Mixingpump):
         Create a subscription for the valve position.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value' and 'parameter').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
