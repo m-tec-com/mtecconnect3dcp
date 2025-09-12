@@ -171,23 +171,31 @@ class OPCUAMachine:
             interval (int): Interval in ms for checking the parameter.
 
         Returns:
-            list: [subscription, handler]
+            list: List of subscriptions created.
         """
+                
+        subscriptions = []
+        handler = None
         if wrap:
             sw = SubscriptionWrapper(callback)
         # check if parameter is a string or an array of strings
         if isinstance(parameter, str):
             if wrap:
-                self.subscribe(parameter, sw.trigger)
+                subscription, handler = self.subscribe(parameter, sw.trigger)
+                sw.subscription(subscription)
             else:
-                self.subscribe(parameter, callback)
+                subscription, handler = self.subscribe(parameter, callback)
+                subscriptions.append(subscription)
         elif isinstance(parameter, list):
             for param in parameter:
                 if isinstance(param, str):
                     if wrap:
-                        self.subscribe(param, sw.trigger)
+                        subscription, handler = self.subscribe(param, sw.trigger)
+                        sw.subscription(subscription)
                     else:
-                        self.subscribe(param, callback)
+                        subscription, handler = self.subscribe(param, callback)
+                        subscriptions.append(subscription)
+        return subscriptions
 
     def subscribe(self, parameter: str, callback: Callable, interval: int = 500):
         """
@@ -223,17 +231,26 @@ class OPCUAMachine:
         self.change(self._liveBitNode, value, "bool")
 
 class SubscriptionWrapper:
-    def __init__(self, callback: Callable):
-        self.callback = callback
-    
+    def __init__(self, callback: Callable, subscription=None):
+        self._callback = callback
+        self._subscriptions = subscription if subscription is not None else []
+
+    def subscription(self, subscription):
+        self._subscriptions.append(subscription)
+
+    def delete(self):
+        for subscription in self._subscriptions:
+            subscription.delete()
+        self._subscriptions = []
+
     def trigger(self, value, parameter):
-        self.exec(value=value, parameter=parameter)
+        self.exec(value=value, parameter=parameter, subscription=self)
 
     def exec(self, **kwargs):
-        sig = inspect.signature(self.callback)
+        sig = inspect.signature(self._callback)
         filtered_kwargs = {k: v for k, v in kwargs.items() if k in sig.parameters}
         # execute the callback in a new thread to avoid blocking
-        threading.Thread(target=self.callback, kwargs=filtered_kwargs).start()
+        threading.Thread(target=self._callback, kwargs=filtered_kwargs).start()
 
 class OpcuaSubscriptionHandler:
     """

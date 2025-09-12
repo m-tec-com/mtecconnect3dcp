@@ -25,7 +25,7 @@ class ModbusMachine:
     def __init__(self, frequency_inverter_id: str = "01", baudrate: int = 19200, log: bool = False):
         self._frequency_inverter_id = frequency_inverter_id
         self._baudrate = baudrate
-        self._log = log
+        self._logging = log
         self._connected = False
         self._serial: Optional[serial.Serial] = None
         self._keepalive_timer: Optional[Timer] = None
@@ -221,5 +221,5 @@ class ModbusMachine:
         return self._int2hex((crc % 256) * 256 + math.floor(crc / 256), 4)
 
     def _log(self, content: str):
-        if self._log:
+        if self._logging:
             print(content)

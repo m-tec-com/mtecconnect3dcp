@@ -265,9 +265,9 @@ class DuomixPlus (Mixingpump):
         if not callable(callback):
             raise ValueError("Callback is not callable.")
         def cb(value, parameter):
-            sw = SubscriptionWrapper(callback)
+            sw = SubscriptionWrapper(callback, subscription)
             sw.trigger(value=not value, parameter=parameter)
-        self.easy_subscribe("state_fc_error", cb, False)
+        subscription = self.easy_subscribe("state_fc_error", cb, False)
 
     @property
     def s_water_pressure(self) -> bool:
@@ -325,9 +325,9 @@ class DuomixPlus (Mixingpump):
         if not callable(callback):
             raise ValueError("Callback is not callable.")
         def cb(value, parameter):
-            sw = SubscriptionWrapper(callback)
+            sw = SubscriptionWrapper(callback, subscription)
             sw.trigger(value=not value, parameter=parameter)
-        self.easy_subscribe("state_drymaterialprobe", cb, False)
+        subscription = self.easy_subscribe("state_drymaterialprobe", cb, False)
     
     @property
     def s_running_local(self) -> bool:
@@ -347,9 +347,9 @@ class DuomixPlus (Mixingpump):
         if not callable(callback):
             raise ValueError("Callback is not callable.")
         def cb(value, parameter):
-            sw = SubscriptionWrapper(callback)
+            sw = SubscriptionWrapper(callback, subscription)
             sw.trigger(value=not value, parameter=parameter)
-        self.easy_subscribe("state_remote_start_local", cb, False)
+        subscription = self.easy_subscribe("state_remote_start_local", cb, False)
     
     @property
     def s_phase_reversed(self) -> bool:
@@ -371,16 +371,16 @@ class DuomixPlus (Mixingpump):
         self.easy_subscribe("state_relay_rotary_switch", callback)
 
     @property
-    def s_running_forward(self) -> bool:
+    def s_pumping_forward(self) -> bool:
         """
-        bool: True if the mixingpump is running forward.
+        bool: True if the mixingpump is pumping forward.
         """
         return bool(self.safe_read("state_fc_fwd", False))
 
-    @s_running_forward.setter
-    def s_running_forward(self, callback: callable):
+    @s_pumping_forward.setter
+    def s_pumping_forward(self, callback: callable):
         """
-        Create a subscription for the forward running state.
+        Create a subscription for the forward pumping state.
 
         Args:
             callback (callable): Callback function (optional parameters: 'value' and 'parameter').
@@ -390,16 +390,16 @@ class DuomixPlus (Mixingpump):
         self.easy_subscribe("state_fc_fwd", callback)
     
     @property
-    def s_running_reverse(self) -> bool:
+    def s_pumping_reverse(self) -> bool:
         """
-        bool: True if the mixingpump is running in reverse.
+        bool: True if the mixingpump is pumping in reverse.
         """
         return bool(self.safe_read("state_fc_rwd", False))
 
-    @s_running_reverse.setter
-    def s_running_reverse(self, callback: callable):
+    @s_pumping_reverse.setter
+    def s_pumping_reverse(self, callback: callable):
         """
-        Create a subscription for the reverse running state.
+        Create a subscription for the reverse pumping state.
 
         Args:
             callback (callable): Callback function (optional parameters: 'value' and 'parameter').
