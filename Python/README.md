@@ -45,7 +45,7 @@ pump.run = True  # Start the pump
 |--------------------------|-----|-----|--------------|------------------------------------|------|---------|----------|-----|------------|-----------|
 | run                      |  ✅  |  ✅  | bool         | Start/stop machine                 |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
 | reverse                  |  ✅  |  ✅  | bool         | Set/Get running reverse   |  ✅   |  ❌   |  ❌   |  ❌   |  ❌   |  ❌   |
-| emergcency_stop() |  ✅  |  ❌  | function         | Execute Emergency Stop   |  ✅   |  ❌   |  ❌   |  ❌   |  ❌   |  ❌   |
+| emergcency_stop() |  ❌  |  ✅  | function         | Execute Emergency Stop   |  ✅   |  ❌   |  ❌   |  ❌   |  ❌   |  ❌   |
 | speed                    |  ✅  |  ✅  | float/int    | Set/Get speed                      |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
 | dosingpump               |  ✅  |  ✅  | bool         | Start/stop dosingpump              |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
 | dosingspeed              |  ✅  |  ✅  | float        | Set dosingpump speed               |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
@@ -83,6 +83,7 @@ pump.run = True  # Start the pump
 | s_ready                    | bool | Ready for operation            |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
 | s_mixing                   | bool | mixing                         |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
 | s_pumping                  | bool | pumping                        |  ✅   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
+| s_pumping_forward          | bool | pumping forward                |  ✅   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
 | s_pumping_reverse          | bool | pumping reverse                |  ✅   |  ❌   |  ❔   |  ❌   |  ❌   |  ❌   |
 | s_pumping_net              | bool | pumping via net                |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
 | s_pumping_fc               | bool | pumping via FC                 |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
@@ -117,9 +118,13 @@ pump.run = True  # Start the pump
 You can subscribe to OPC UA variables for real-time updates:
 
 ```python
-def callback(value, parameter): # value and parameter (origial OPC-UA variable name) are optional
+def callback(value, parameter, subscription): # value and parameter (origial OPC-UA variable name) are optional
     print(f"{parameter} changed to {value}")
+    if value:
+        print("we are ready to go")
+        subscription.delete()
 mp = Duomix()
+mp.connect("10.129.4.73")
 mp.s_ready = callback # set a variable to you callback to subscribe
 ```
 ---

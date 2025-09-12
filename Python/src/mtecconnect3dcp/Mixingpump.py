@@ -1,5 +1,5 @@
 from .OPCUAMachine import OPCUAMachine, SubscriptionWrapper
-
+import threading
 class Mixingpump(OPCUAMachine):
     """
     Class for controlling a mixing pump via OPC-UA.
@@ -67,9 +67,9 @@ class Mixingpump(OPCUAMachine):
         if not callable(callback):
             raise ValueError("Callback is not callable.")
         def cb(value, parameter):
-            sw = SubscriptionWrapper(callback)
+            sw = SubscriptionWrapper(callback, subscription)
             sw.trigger(value=value * 50 /65535, parameter=parameter)
-        self.easy_subscribe("actual_value_mixingpump", cb)
+        subscription = self.easy_subscribe("actual_value_mixingpump", cb, False)
 
     @property
     def s_error(self) -> bool:
@@ -165,7 +165,9 @@ class Mixingpump(OPCUAMachine):
         if not callable(callback):
             raise ValueError("Callback is not callable.")
         def cb(value, parameter):
-            sw = SubscriptionWrapper(callback)
+            threading.Thread(target=thr, kwargs={"value": value, "parameter": parameter, "subscription": subscription}).start()
+        def thr(value, parameter, subscription):
+            sw = SubscriptionWrapper(callback, subscription)
             if value:
                 sw.trigger(value=value, parameter=parameter)
             else:
@@ -173,7 +175,7 @@ class Mixingpump(OPCUAMachine):
                     sw.trigger(value=self.s_pumping_fc, parameter=parameter)
                 elif parameter == "aut_mixingpump_fc":
                     sw.trigger(value=self.s_pumping_net, parameter=parameter)
-        self.easy_subscribe(["aut_mixingpump_net", "aut_mixingpump_fc"], cb)
+        subscription = self.easy_subscribe(["aut_mixingpump_net", "aut_mixingpump_fc"], cb, False)
 
     @property
     def s_pumping_net(self) -> bool:

@@ -261,9 +261,9 @@ class Dosingpump(OPCUAMachine):
         if not callable(callback):
             raise ValueError("Callback is not callable.")
         def cb(value, parameter):
-            sw = SubscriptionWrapper(callback)
+            sw = SubscriptionWrapper(callback, subscription)
             sw.trigger(value=not value, parameter=parameter)
-        self.easy_subscribe("state_fc_error_dosingpump", cb, False)
+        subscription = self.easy_subscribe("state_fc_error_dosingpump", cb, False)
     
     @property
     def s_operating_pressure(self) -> bool:
@@ -283,6 +283,6 @@ class Dosingpump(OPCUAMachine):
         if not callable(callback):
             raise ValueError("Callback is not callable.")
         def cb(value, parameter):
-            sw = SubscriptionWrapper(callback)
+            sw = SubscriptionWrapper(callback, subscription)
             sw.trigger(value=not value, parameter=parameter)
-        self.easy_subscribe("state_pressure_error_dosingpump", cb, False)
+        subscription = self.easy_subscribe("state_pressure_error_dosingpump", cb, False)

@@ -59,6 +59,13 @@ class Pump(ModbusMachine):
         return abs(self.m_speed) > 0
     
     @property
+    def s_pumping_forward(self) -> bool:
+        """
+        bool: True if the pump is running forward, False otherwise.
+        """
+        return self.m_speed > 0
+    
+    @property
     def s_pumping_reverse(self) -> bool:
         """
         bool: True if the pump is running in reverse, False otherwise.
