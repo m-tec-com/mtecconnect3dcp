@@ -231,9 +231,9 @@ class OPCUAMachine:
         self.change(self._liveBitNode, value, "bool")
 
 class SubscriptionWrapper:
-    def __init__(self, callback: Callable, subscription=[]):
+    def __init__(self, callback: Callable, subscription=None):
         self._callback = callback
-        self._subscriptions = subscription
+        self._subscriptions = subscription if subscription is not None else []
 
     def subscription(self, subscription):
         self._subscriptions.append(subscription)
