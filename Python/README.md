@@ -41,79 +41,79 @@ pump.run = True  # Start the pump
 
 ### Control
 
-| Function/Property         | Get | Set | Type         | Description                        | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
-|--------------------------|-----|-----|--------------|------------------------------------|------|---------|----------|-----|------------|-----------|
-| run                      |  ✅  |  ✅  | bool         | Start/stop machine                 |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
-| reverse                  |  ✅  |  ✅  | bool         | Set/Get running reverse   |  ✅   |  ❌   |  ❌   |  ❌   |  ❌   |  ❌   |
-| emergcency_stop() |  ❌  |  ✅  | function         | Execute Emergency Stop   |  ✅   |  ❌   |  ❌   |  ❌   |  ❌   |  ❌   |
-| speed                    |  ✅  |  ✅  | float/int    | Set/Get speed                      |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
-| dosingpump               |  ✅  |  ✅  | bool         | Start/stop dosingpump              |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| dosingspeed              |  ✅  |  ✅  | float        | Set dosingpump speed               |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| water                    |  ✅  |  ✅  | float        | Set water flow (l/h)               |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| cleaning                 |  ✅  |  ✅  | bool         | Start/stop cleaning water          |  ❌   |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |
-| setDigital(pin, value)   |  ❌  |  ✅  | function     | Set digital output                 |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
-| setAnalog(pin, value)    |  ❌  |  ✅  | function     | Set analog output                  |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
+| Function/Property      | Get | Set | Type        | Description               | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | SMP 3DCP+ | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
+|------------------------|-----|----|--------------|---------------------------|-----|----|-----|----|-----|----|----|
+| run                    | ✅ | ✅ | bool         | Start/stop machine        | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| reverse                | ✅ | ✅ | bool         | Set/Get running reverse   | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| emergcency_stop()      | ❌ | ✅ | function     | Execute Emergency Stop    | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| speed                  | ✅ | ✅ | float/int    | Set/Get speed             | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| dosingpump             | ✅ | ✅ | bool         | Start/stop dosingpump     | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| dosingspeed            | ✅ | ✅ | float        | Set dosingpump speed      | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| water                  | ✅ | ✅ | float        | Set water flow (l/h)      | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| cleaning               | ✅ | ✅ | bool         | Start/stop cleaning water | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| setDigital(pin, value) | ❌ | ✅ | function     | Set digital output        | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| setAnalog(pin, value)  | ❌ | ✅ | function     | Set analog output         | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 
 ### Measure (GET)
 
-| Function/Property        | Type         | Description        | Unit      | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
-|--------------------------|--------------|--------------------|-----------|-----------------|--------------|---------------|----------|----------------------------|---------------------------|
-| m_speed               | float        | speed              |           |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
-| m_dosingspeed         | float        | speed of pump | %       |  ❌   |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |
-| m_pressure            | float        | pressure           | bar       |  ❌   |  ❌   |  ✅   |  ❌   |  ✅   |  ✅ (optional)   |
-| m_water               | float        | water flow         | l/h       |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| m_water_temperature   | float        | water temperature  | °C        |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| m_temperature         | float        | mortar temperature | °C        |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| m_valve               | float        | valve position     | %         |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| m_silolevel           | float        | Silo level         | %         |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |
-| m_voltage             | bool         | Voltage            |           |  ✅   |  ❌   |  ❌   |  ❌   |  ❌   |  ❌   |
-| m_current             | bool         | Current            |           |  ✅   |  ❌   |  ❌   |  ❌   |  ❌   |  ❌   |
-| m_torque              | bool         | Torque             |           |  ✅   |  ❌   |  ❌   |  ❌   |  ❌   |  ❌   |
-| getDigital(pin)       | function     | Digital input      | bool      |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
-| getAnalog(pin)        | function     | Analog input       | 0 - 65535 |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
+| Function/Property   | Type     | Description        | Unit      | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | SMP 3DCP+ | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
+|---------------------|----------|--------------------|-----------|-----|----|----|-----|----|-----|-----|
+| m_speed             | float    | speed              |           | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| m_dosingspeed       | float    | speed of pump      | %         | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ |
+| m_pressure          | float    | pressure           | bar       | ❌ | ❌ | ✅ | ❌ | ✅ | ✅ | ✅ (optional) |
+| m_water             | float    | water flow         | l/h       | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| m_water_temperature | float    | water temperature  | °C        | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| m_temperature       | float    | mortar temperature | °C        | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| m_valve             | float    | valve position     | %         | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| m_silolevel         | float    | Silo level         | %         | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ | ❌ |
+| m_voltage           | bool     | Voltage            |           | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| m_current           | bool     | Current            |           | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| m_torque            | bool     | Torque             |           | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| getDigital(pin)     | function | Digital input      | bool      | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| getAnalog(pin)      | function | Analog input       | 0 - 65535 | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 
 
 
 ### Status (GET)
 
-| Function/Property        | Type         | Description                        | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
-|--------------------------|--------------|------------------------------------|------|---------|----------|-----|------------|-----------|
-| s_error                    | bool | error state                    |  ❌   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
-| s_error_no                 | int  | error number                   |  ❌   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
-| s_ready                    | bool | Ready for operation            |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
-| s_mixing                   | bool | mixing                         |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
-| s_pumping                  | bool | pumping                        |  ✅   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
-| s_pumping_forward          | bool | pumping forward                |  ✅   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| s_pumping_reverse          | bool | pumping reverse                |  ✅   |  ❌   |  ❔   |  ❌   |  ❌   |  ❌   |
-| s_pumping_net              | bool | pumping via net                |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
-| s_pumping_fc               | bool | pumping via FC                 |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
-| s_remote                   | bool | hardware remote connected      |  ❌   |  ✅   |  ✅   |  ✅   |  ✅   |  ✅   |
-| s_solenoidvalve            | bool | solenoid valve open            |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
-| s_waterpump                | bool | pumping waterpump running      |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
-| s_emergency_stop           | bool | emergency stop ok              |  ❌   |  ❌   |  ✅   |  ❌   |  ✅   |  ✅   |
-| s_on                       | bool | machine powered on             |  ❌   |  ❌   |  ✅   |  ❌   |  ✅   |  ✅   |
-| s_safety_mp                | bool | mixingpump safety ok           |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| s_safety_mixer             | bool | mixer safety ok                |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| s_circuitbreaker_fc        | bool | Frequency Converter circuit breaker ok |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| s_circuitbreaker           | bool | other circuit breaker ok       |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| s_fc                       | bool | frequency converter ok         |  ❌   |  ❌   |  ✅   |  ❌   |  ✅   |  ✅   |
-| s_operating_pressure       | bool | pressure ok                    |  ❌   |  ❌   |  ❌   |  ❌   |  ✅   |  ✅   |
-| s_water_pressure           | bool | water pressure ok              |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| s_hopper_wet               | bool | wet material hopper ok         |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| s_hopper_dry               | bool | dry material hopper ok         |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| s_running                  | bool | Machine running                |  ❌   |  ❌   |  ❌   |  ❌   |  ✅   |  ✅   |
-| s_airpressure              | bool | airpressure ready              |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| s_phase_reversed           | bool | phase reversed                 |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |  ❌   |
-| s_rotaryvalve              | bool | rotary valve running           |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |
-| s_compressor               | bool | compressor running             |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |
-| s_vibrator_1               | bool | vibrator 1 running             |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |
-| s_vibrator_2               | bool | vibrator 2 running             |  ❌   |  ❌   |  ❌   |  ✅   |  ❌   |  ❌   |
+| Function/Property    | Type | Description                    | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | SMP 3DCP+ | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
+|----------------------|------|--------------------------------|-----|----|-----|----|-----|----|-----|
+| s_error              | bool | error state                    | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| s_error_no           | int  | error number                   | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| s_ready              | bool | Ready for operation            | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| s_mixing             | bool | mixing                         | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| s_pumping            | bool | pumping                        | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| s_pumping_forward    | bool | pumping forward                | ✅ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| s_pumping_reverse    | bool | pumping reverse                | ✅ | ❌ | ❔ | ❌ | ❔ | ❌ | ❌ |
+| s_pumping_net        | bool | pumping via net                | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| s_pumping_fc         | bool | pumping via FC                 | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| s_remote             | bool | hardware remote connected      | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| s_solenoidvalve      | bool | solenoid valve open            | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| s_waterpump          | bool | pumping waterpump running      | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| s_emergency_stop     | bool | emergency stop ok              | ❌ | ❌ | ✅ | ❌ | ✅ | ✅ | ✅ |
+| s_on                 | bool | machine powered on             | ❌ | ❌ | ✅ | ❌ | ✅ | ✅ | ✅ |
+| s_safety_mp          | bool | mixingpump safety ok           | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| s_safety_mixer       | bool | mixer safety ok                | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| s_circuitbreaker_fc  | bool | Frequency Converter circuit breaker ok | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| s_circuitbreaker     | bool | other circuit breaker ok       | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| s_fc                 | bool | frequency converter ok         | ❌ | ❌ | ✅ | ❌ | ✅ | ✅ | ✅ |
+| s_operating_pressure | bool | pressure ok                    | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| s_water_pressure     | bool | water pressure ok              | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| s_hopper_wet         | bool | wet material hopper ok         | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| s_hopper_dry         | bool | dry material hopper ok         | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| s_running            | bool | Machine running                | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| s_airpressure        | bool | airpressure ready              | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| s_phase_reversed     | bool | phase reversed                 | ❌ | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| s_rotaryvalve        | bool | rotary valve running           | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ | ❌ |
+| s_compressor         | bool | compressor running             | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ | ❌ |
+| s_vibrator_1         | bool | vibrator 1 running             | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ | ❌ |
+| s_vibrator_2         | bool | vibrator 2 running             | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ | ❌ |
 
 ### Subscriptions
 
-| Description                        | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
-|------------------------------------|------|---------|----------|-----|------------|-----------|
-| Subscribe to variable changes      |  ❌   |  ✅   |  ✅   |  ✅   |  ❌   |  ❌   |
+| Description                        | Pump (P20 & P50)| duo-mix 3DCP | duo-mix 3DCP+ | SMP 3DCP | SMP 3DCP+ | Dosingpump (flow-matic PX) | Printhead (flow-matic PX) |
+|------------------------------------|-----|----|-----|----|-----|----|-----|
+| Subscribe to variable changes      | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 
 You can subscribe to OPC UA variables for real-time updates:
 
