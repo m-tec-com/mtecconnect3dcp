@@ -34,7 +34,7 @@ class Dosingpump(OPCUAMachine):
         Create a subscription for the running state of the dosingpump.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -69,7 +69,7 @@ class Dosingpump(OPCUAMachine):
         Create a subscription for the real speed of the dosingpump in ml/min.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -88,7 +88,7 @@ class Dosingpump(OPCUAMachine):
         Create a subscription for the real speed of the dosingpump in %.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -107,7 +107,7 @@ class Dosingpump(OPCUAMachine):
         Create a subscription for the real pressure of the dosingpump in bar.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -142,7 +142,7 @@ class Dosingpump(OPCUAMachine):
         Create a subscription for the error state of the dosingpump.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -161,7 +161,7 @@ class Dosingpump(OPCUAMachine):
         Create a subscription for the error number of the dosingpump.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -180,7 +180,7 @@ class Dosingpump(OPCUAMachine):
         Create a subscription for the ready state of the dosingpump.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -199,7 +199,7 @@ class Dosingpump(OPCUAMachine):
         Create a subscription for the emergency stop state.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -218,7 +218,7 @@ class Dosingpump(OPCUAMachine):
         Create a subscription for the machine power state.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -237,7 +237,7 @@ class Dosingpump(OPCUAMachine):
         Create a subscription for the remote connection state.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -256,7 +256,7 @@ class Dosingpump(OPCUAMachine):
         Create a subscription for the frequency converter state.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -278,7 +278,7 @@ class Dosingpump(OPCUAMachine):
         Create a subscription for the operating pressure state.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")

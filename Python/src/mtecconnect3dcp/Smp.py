@@ -22,7 +22,7 @@ class Smp(Mixingpump):
         Create a subscription for the rotary valve state (automatic mode).
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -41,7 +41,7 @@ class Smp(Mixingpump):
         Create a subscription for the compressor state (automatic mode).
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -60,7 +60,7 @@ class Smp(Mixingpump):
         Create a subscription for the vibrator 1 state (automatic mode).
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -79,7 +79,7 @@ class Smp(Mixingpump):
         Create a subscription for the vibrator 2 state (automatic mode).
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -98,7 +98,7 @@ class Smp(Mixingpump):
         Create a subscription for the silo level in percentage.
 
         Args:
-            callback (callable): Callback function.
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
