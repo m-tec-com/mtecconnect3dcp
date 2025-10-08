@@ -62,7 +62,7 @@ class Mixingpump(OPCUAMachine):
         Create a subscription for the real speed of the mixingpump in Hz.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -84,7 +84,7 @@ class Mixingpump(OPCUAMachine):
         Create a subscription for the error state of the machine.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -103,7 +103,7 @@ class Mixingpump(OPCUAMachine):
         Create a subscription for the error number of the machine.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -122,7 +122,7 @@ class Mixingpump(OPCUAMachine):
         Create a subscription for the ready state of the machine.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -141,7 +141,7 @@ class Mixingpump(OPCUAMachine):
         Create a subscription for the mixer running state (automatic mode).
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -160,7 +160,7 @@ class Mixingpump(OPCUAMachine):
         Create a subscription for the mixingpump running state (net).
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -190,7 +190,7 @@ class Mixingpump(OPCUAMachine):
         Create a subscription for the mixingpump running state (net).
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -209,7 +209,7 @@ class Mixingpump(OPCUAMachine):
         Create a subscription for the mixingpump running state (fc).
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -228,7 +228,7 @@ class Mixingpump(OPCUAMachine):
         Create a subscription for the solenoid valve state (automatic mode).
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -247,7 +247,7 @@ class Mixingpump(OPCUAMachine):
         Create a subscription for the water pump state (automatic mode).
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")
@@ -266,7 +266,7 @@ class Mixingpump(OPCUAMachine):
         Create a subscription for the remote connection state.
 
         Args:
-            callback (callable): Callback function (optional parameters: 'value', 'parameter'and 'subscription').
+            callback (callable): Callback function (optional parameters: 'value', 'parameter' and 'subscription').
         """
         if not callable(callback):
             raise ValueError("Callback is not callable.")

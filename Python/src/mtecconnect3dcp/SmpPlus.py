@@ -6,5 +6,5 @@ class SmpPlus(Smp, MixingpumpPlus):
     SMP
 
     OPC-UA client class for m-tec SMP machines (Mixingpump).
-    Inherits from Duomix and MixingpumpPlus.
+    Inherits from Smp and MixingpumpPlus.
     """
