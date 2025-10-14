@@ -81,6 +81,7 @@ myChart.update();
 
 
 var pump = new mtecConnectModbus();
+pump.settings.log = true;
 pump.settings.keepAlive.command = "03FD000001";
 pump.settings.keepAlive.interval = diagramTimeResolution * 1000;
 pump.settings.keepAlive.callback = updateData;
