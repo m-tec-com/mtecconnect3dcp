@@ -34,18 +34,17 @@
 </button>
 <div id="s2" class="circle" style="cursor: help">Betriebsbereit</div>
 <button id="runButton" class="circle" style="cursor: pointer" onclick="startStop()" disabled>Start</button>
-<script src="../libraries/JavaScript/mtecConnectModbus.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/m-tec-com/mtecconnect3dcp/JavaScript/mtecconnect3dcp.js"></script>
 <script>
 
-    var pump = new mtecConnectModbus();
-    pump.settings.keepAlive.command = "03FD060001";
-    pump.settings.keepAlive.callback = switches;
+    var pump = new Pump();
+    pump._keepaliveCommand = "03FD060001";
 
     async function connect() {
-
-	await pump.connect();
-	await (ready = pump.ready);
-	document.getElementById("runButton").disabled = false;
+        await pump.connect();
+        await (ready = pump.s_ready);
+        pump.keepalive(switches, 250);
+        document.getElementById("runButton").disabled = false;
         document.getElementById("connectButton").disabled = true;
         document.getElementById("connectButton").innerHTML = "Schnittstelle</br>verbunden";
         document.getElementById("connectButton").style.backgroundColor = "lightgreen";

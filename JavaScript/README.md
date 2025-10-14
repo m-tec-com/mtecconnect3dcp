@@ -7,7 +7,7 @@
 ## Minimal init
 
 ```html
-<script src="mtecconnect3dcp.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/m-tec-com/mtecconnect3dcp/JavaScript/mtecconnect3dcp.js"></script>
 <script>
     // Using the legacy class (backward compatible)
     var pump = new mtecConnectModbus();

@@ -134,7 +134,7 @@
 
     <script src="https://cdn.jsdelivr.net/gh/m-tec-com/mtecconnect3dcp/JavaScript/mtecconnect3dcp.js"></script>
     <script>
-        var pump = new mtecConnectModbus();
+        var pump = new Pump();
         pump.settings.log = true;
 
         window.onload = function () {
@@ -143,17 +143,18 @@
             });
         }
 
+        var keepaliveTimer = null;
+        var keepaliveInterval = 250;
+
         async function connect() {
             var connected = await pump.connect();
             if (!connected) {
                 return;
             }
-            pump.settings.keepAlive.callback = updateOutput;
-            pump.settings.keepAlive.command = callbackSwitcher;
             pump.settings.sendCallback = addOutput;
             pump.settings.receivedCallback = addInput;
 
-            pump.stop();
+            await pump.stop();
 
             if (!document.getElementById("connectedLED").classList.contains("active")) {
                 document.getElementById("connectedLED").classList.add("active");
@@ -162,6 +163,9 @@
             document.getElementById("speedSlider").addEventListener("change", async function () {
                 pump.frequency = this.value;
             });
+            
+            // Start custom keepalive loop
+            startKeepAliveLoop();
         }
 
 
@@ -180,6 +184,28 @@
                 case 2:
                     return "03FD030001";
                     break;
+            }
+        }
+
+        function startKeepAliveLoop() {
+            if (keepaliveTimer) {
+                clearInterval(keepaliveTimer);
+            }
+            keepaliveTimer = setInterval(async () => {
+                try {
+                    const command = callbackSwitcher();
+                    const value = await pump._sendHexCommand(pump._frequencyInverterID + command);
+                    updateOutput(value);
+                } catch (error) {
+                    console.error('Keepalive error:', error);
+                }
+            }, keepaliveInterval);
+        }
+
+        function stopKeepAliveLoop() {
+            if (keepaliveTimer) {
+                clearInterval(keepaliveTimer);
+                keepaliveTimer = null;
             }
         }
 
@@ -211,13 +237,13 @@
         async function startStop() {
             started = !started;
             if (started) {
-                pump.start();
+                await (pump.run = true);
                 if (!document.getElementById("runningLED").classList.contains("active")) {
                     document.getElementById("runningLED").classList.add("active");
                 }
                 document.getElementById("runningTitle").innerHTML = "Stop";
             } else {
-                pump.stop();
+                await (pump.run = false);
                 if (document.getElementById("runningLED").classList.contains("active")) {
                     document.getElementById("runningLED").classList.remove("active");
                 }

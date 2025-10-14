@@ -359,21 +359,24 @@ class Pump extends ModbusMachine {
      */
     set run(state) {
         return (async () => {
-            this._lastRunning = state;
+            let result;
             if (state) {
-                let result;
                 if (this._lastReverse) {
                     result = await this.write("FA00", 0xC600);
                 } else {
                     result = await this.write("FA00", 0xC400);
                 }
-                this.keepalive();
-                return result;
+                if(!this._lastRunning){
+                    this.keepalive();
+                }
             } else {
-                const result = await this.write("FA00", 0x0000);
-                this.stopKeepalive();
-                return result;
+                result = await this.write("FA00", 0x0000);
+                if(this._lastRunning){
+                    this.stopKeepalive();
+                }
             }
+            this._lastRunning = state;
+            return result;
         })();
     }
 
@@ -536,7 +539,6 @@ class Pump extends ModbusMachine {
                     await (this.reverse = false);
                 }
                 await (this._frequency = Math.abs(value));
-                await (this.run = true);
             }
             this._lastSpeed = value;
         })();
